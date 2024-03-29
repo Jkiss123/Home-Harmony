@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "36546116971",
+    "project_id": "furniture-ecomerece",
+    "storage_bucket": "furniture-ecomerece.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:36546116971:android:aaa4c57e665db7b880602e",
+        "android_client_info": {
+          "package_name": "com.example.furniturecloudy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARIZ-3_QDcP2FAk-It898ohrygOsUCKT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

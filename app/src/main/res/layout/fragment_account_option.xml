@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".present.fragments.loginRegister.AccountOptionFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/blury_background"
+        android:scaleType="centerCrop" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txvAppOwner"
+            style="@style/h3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:text="@string/owner"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txvSlogantAccountOption"
+            style="@style/h4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:gravity="center"
+            android:text="@string/introductSlogant"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txvAppOwner" />
+
+        <TextView
+            android:id="@+id/txtvSlogan2AccountOption"
+            style="@style/h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="@string/introductSlogant2"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@id/txvSlogantAccountOption"
+            app:layout_constraintStart_toStartOf="@+id/txvSlogantAccountOption"
+            app:layout_constraintTop_toBottomOf="@+id/txvSlogantAccountOption" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSignInOption"
+            style="@style/blueButtonStyle"
+            android:layout_width="@dimen/mediumButtonWidth"
+            android:layout_height="@dimen/smallButtonHeight"
+            android:layout_marginStart="86dp"
+            android:layout_marginEnd="88dp"
+            android:text="Đăng Nhập"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/txtvSlogan2AccountOption"
+            app:layout_constraintStart_toStartOf="@+id/txtvSlogan2AccountOption"
+            app:layout_constraintTop_toBottomOf="@+id/txtvSlogan2AccountOption"
+            app:layout_constraintVertical_bias="0.316" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSignUpOption"
+            style="@style/whiteButtonStyle"
+            android:layout_width="@dimen/mediumButtonWidth"
+            android:layout_height="@dimen/smallButtonHeight"
+            android:text="Đăng Ký"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnSignInOption"
+            app:layout_constraintVertical_bias="0.351" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

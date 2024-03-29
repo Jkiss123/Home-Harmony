@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blury_background"
+    tools:context=".present.fragments.loginRegister.RegisterFragment">
+
+    <TextView
+        android:id="@+id/txv_register_AppOwner"
+        style="@style/h3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="68dp"
+        android:text="@string/owner"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_register_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_register_left"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txv_register_Slogant"
+        style="@style/h4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="Đăng Ký"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_register_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_register_left"
+        app:layout_constraintTop_toBottomOf="@+id/txv_register_AppOwner" />
+
+    <TextView
+        android:id="@+id/txtv_register_Slogan2n"
+        style="@style/h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Bạn đã có tài khoản? Đăng nhập"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_register_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_register_left"
+        app:layout_constraintTop_toBottomOf="@+id/txv_register_Slogant" />
+
+    <EditText
+        android:id="@+id/edt_register_firstName"
+        style="@style/editText"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        android:hint="First Name"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_register_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_register_left"
+        app:layout_constraintTop_toBottomOf="@+id/txtv_register_Slogan2n" />
+
+    <EditText
+        android:id="@+id/edt_register_lastName"
+        style="@style/editText"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:hint="Last Name"
+        android:singleLine="true"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_register_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_register_left"
+        app:layout_constraintTop_toBottomOf="@+id/edt_register_firstName" />
+
+    <EditText
+        android:id="@+id/edt_register_email"
+        style="@style/editText"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:hint="Email"
+        android:singleLine="true"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_register_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_register_left"
+        app:layout_constraintTop_toBottomOf="@+id/edt_register_lastName" />
+
+    <EditText
+        android:id="@+id/edt_register_password"
+        style="@style/editText"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:hint="Password"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_register_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_register_left"
+        app:layout_constraintTop_toBottomOf="@+id/edt_register_email" />
+
+    <com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton
+        android:id="@+id/btn_register_dangky"
+        style="@style/blueButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/smallButtonHeight"
+        android:layout_marginTop="20dp"
+        android:text="Đăng Ký"
+        app:spinning_bar_color="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_register_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_register_left"
+        app:layout_constraintTop_toBottomOf="@+id/edt_register_password" />
+
+    <ImageView
+        android:id="@+id/btn_register_facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/facebook_login"
+        app:layout_constraintStart_toStartOf="@+id/guideline_register_left"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register_dangky" />
+
+    <ImageView
+        android:id="@+id/btn_register_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:src="@drawable/google_login"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_register_right"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register_dangky" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_register_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.09" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_register_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.91" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="slogantIntroduc">115dp</dimen>
+    <dimen name="smallButtonSize">130dp</dimen>
+    <dimen name="smallButtonWidth">130dp</dimen>
+    <dimen name="smallButtonHeight">55dp</dimen>
+    <dimen name="buttonCorners">5dp</dimen>
+    <dimen name="mediumButtonWidth">250dp</dimen>
+</resources>

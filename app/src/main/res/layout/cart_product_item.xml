@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/white">
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/imgCartProduct"
+        android:layout_width="80dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="5dp"
+        android:scaleType="centerCrop"
+        android:src="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tv_cart_productname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Product Name"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:maxLines="1"
+        android:fontFamily="@font/poppins_light"
+        app:layout_constraintStart_toEndOf="@id/imgCartProduct"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_cart_proudctprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/tv_cart_productname"
+        app:layout_constraintTop_toBottomOf="@id/tv_cart_productname"
+        android:text="$600"
+        />
+    
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgv_cart_color"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="5dp"
+        android:src="@color/g_blue"
+        app:layout_constraintStart_toStartOf="@id/tv_cart_productname"
+        app:layout_constraintTop_toBottomOf="@id/tv_cart_proudctprice"
+        />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgv_cart_size"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="5dp"
+        android:src="@color/g_gray500"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/imgv_cart_color"
+        app:layout_constraintTop_toBottomOf="@id/tv_cart_proudctprice"
+        />
+
+    <TextView
+        android:id="@+id/tv_cart_productSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="L"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/imgv_cart_size"
+        app:layout_constraintEnd_toEndOf="@id/imgv_cart_size"
+        app:layout_constraintTop_toTopOf="@id/imgv_cart_size"
+        app:layout_constraintBottom_toBottomOf="@id/imgv_cart_size"/>
+
+    
+    
+    <ImageView
+        android:id="@+id/btnminus_cart"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/ic_minus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+        android:id="@+id/tv_cart_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnplus_cart"
+        app:layout_constraintBottom_toTopOf="@id/btnminus_cart"
+        android:layout_marginEnd="5dp"
+        />
+    <ImageView
+        android:id="@+id/btnplus_cart"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/ic_plus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

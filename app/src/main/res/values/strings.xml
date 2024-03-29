@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FurnitureCloudy</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="introductSlogant">Địa chỉ uy tín\nmua sắm\nmỗi ngày</string>
+    <string name="introductSlogant2">Niềm vui của khách hàng\nlà sự ưu tiên hàng đầu của chúng tôi</string>
+    <string name="owner">ĐặngHuy</string>
+</resources>

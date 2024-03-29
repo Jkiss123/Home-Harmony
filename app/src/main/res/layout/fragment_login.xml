@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blury_background"
+    tools:context=".present.fragments.loginRegister.LoginFragment">
+
+    <TextView
+        android:id="@+id/txvAppOwnerLogin"
+        style="@style/h3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="68dp"
+        android:text="@string/owner"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/guidelineLoginLeft"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txvSlogantLogin"
+        style="@style/h4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="Đăng Nhập"
+        app:layout_constraintStart_toStartOf="@id/guidelineLoginLeft"
+        app:layout_constraintTop_toBottomOf="@+id/txvAppOwnerLogin" />
+
+    <TextView
+        android:id="@+id/txtvSlogan2Login"
+        style="@style/h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Chưa có tài khoản? Đăng ký"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@id/guidelineLoginLeft"
+        app:layout_constraintTop_toBottomOf="@+id/txvSlogantLogin" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutLogin1"
+        style="@style/editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:hint="Tên đăng nhập"
+        app:layout_constraintEnd_toEndOf="@id/guidelineLoginRight"
+        app:layout_constraintHorizontal_bias="0.536"
+        app:layout_constraintStart_toStartOf="@id/guidelineLoginLeft"
+        app:layout_constraintTop_toBottomOf="@+id/txtvSlogan2Login">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtLoginTaiKhoan"
+            style="@style/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2login"
+        style="@style/editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="Mật khẩu"
+        app:layout_constraintEnd_toEndOf="@id/guidelineLoginRight"
+        app:layout_constraintHorizontal_bias="0.536"
+        app:layout_constraintStart_toStartOf="@id/guidelineLoginLeft"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutLogin1"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtLoginMatKhau"
+            style="@style/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/txtQuenMatKhau_Login"
+        style="@style/h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Quên mật khẩu"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineLoginRight"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2login" />
+
+    <com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton
+        android:id="@+id/btn_login_dangnhap"
+        style="@style/blueButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/smallButtonHeight"
+        android:layout_marginTop="12dp"
+        android:text="Đăng Nhập"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineLoginRight"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLoginLeft"
+        app:layout_constraintTop_toBottomOf="@+id/txtQuenMatKhau_Login"
+        app:spinning_bar_color="@color/white" />
+
+    <ImageView
+        android:id="@+id/btn_login_facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/facebook_login"
+        app:layout_constraintStart_toStartOf="@id/guidelineLoginLeft"
+        app:layout_constraintTop_toBottomOf="@id/btn_login_dangnhap" />
+
+    <ImageView
+        android:id="@+id/btn_login_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/google_login"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineLoginRight"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login_dangnhap" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLoginLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.09" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLoginRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.91" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
