@@ -13,7 +13,7 @@ Home Harmony app nhắm đến người dùng đang chuẩn bị mua sắm đồ
 - Firebase Firestore 
 - Firebase Storage 
 - MVVM & LiveData 
-- Coroutines .
+- Coroutines 
 - View binding 
 - Glide
 - Hilt-Dagger
