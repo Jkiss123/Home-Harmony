@@ -1,6 +1,8 @@
 # Home Harmony
 
 Home Harmony app nhắm đến người dùng đang chuẩn bị mua sắm đồ nội thất để tân trang cho ngôi nhà của mình, chúng tôi cung cấp đa dạng sản phẩm
+
+
 ![image](https://github.com/cuocdart18/eKMA/assets/111178266/729fee2a-27a5-401a-9c0e-1499a59df79e)
 
 
