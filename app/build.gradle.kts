@@ -81,7 +81,7 @@ dependencies {
     //implementation ("io.github.vejei.viewpagerindicator:viewpagerindicator:1.0.0-alpha.1")
 
     //stepView
-    implementation ("com.shuhart.stepview:stepview:1.5.1")
+    implementation ("com.github.shuhart:stepview:1.5.1")
 
     //Android Ktx
     implementation ("androidx.navigation:navigation-fragment-ktx:2.7.7")
