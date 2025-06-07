@@ -14,6 +14,7 @@ import com.example.furniturecloudy.data.getOrderStatus
 import com.example.furniturecloudy.databinding.FragmentOrderDetailBinding
 import com.example.furniturecloudy.model.adapter.BillingProductAdapter
 import com.example.furniturecloudy.util.VerticalItemDecoration
+import com.example.furniturecloudy.util.formatPrice
 
 class OrderDetailFragment : Fragment() {
     private lateinit var binding:FragmentOrderDetailBinding
@@ -61,7 +62,7 @@ class OrderDetailFragment : Fragment() {
             tvFullName.text = order.address.fullName
             tvAddress.text = "${order.address.wards} ${order.address.city}"
             tvPhoneNumber.text = order.address.phone
-            tvTotalPrice.text = "$ ${order.totalPrice}"
+            tvTotalPrice.text = "$ ${order.totalPrice.formatPrice()}"
         }
 
         binding.imageCloseOrder.setOnClickListener {

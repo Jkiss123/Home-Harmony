@@ -28,6 +28,7 @@ import com.example.furniturecloudy.model.viewmodel.BillingViewmodel
 import com.example.furniturecloudy.model.viewmodel.OrderViewmodel
 import com.example.furniturecloudy.util.HorizontalcalItemDecoration
 import com.example.furniturecloudy.util.Resource
+import com.example.furniturecloudy.util.formatPrice
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -87,7 +88,7 @@ class BillingFragment : Fragment() {
         binding.imageAddAddress.setOnClickListener {
             findNavController().navigate(R.id.action_billingFragment_to_addressFragment)
         }
-        binding.tvTotalPrice.text = "$ $totalPrice"
+        binding.tvTotalPrice.text = "$ ${totalPrice.formatPrice()}}"
         binding.imageCloseBilling.setOnClickListener {
             findNavController().navigateUp()
         }

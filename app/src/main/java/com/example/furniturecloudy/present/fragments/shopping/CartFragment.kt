@@ -21,6 +21,7 @@ import com.example.furniturecloudy.model.firebase.FirebaseCommon
 import com.example.furniturecloudy.model.viewmodel.CartViewmodel
 import com.example.furniturecloudy.util.Resource
 import com.example.furniturecloudy.util.VerticalItemDecoration
+import com.example.furniturecloudy.util.formatPrice
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -92,7 +93,7 @@ class CartFragment : Fragment() {
 
                     price?.let {
                         totalPrice = price.toFloat()
-                        binding.tvTotalPrice.text = "$ $price"
+                        binding.tvTotalPrice.text = "$ ${totalPrice.formatPrice()}"
                     }
 
                 }
