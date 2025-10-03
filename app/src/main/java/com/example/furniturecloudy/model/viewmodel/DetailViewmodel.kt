@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.furniturecloudy.data.CartProducts
+import com.example.furniturecloudy.data.Product
 import com.example.furniturecloudy.model.firebase.FirebaseCommon
 import com.example.furniturecloudy.util.Resource
 import com.google.firebase.auth.FirebaseAuth
@@ -107,6 +108,9 @@ class DetailViewmodel @Inject constructor(
     private val _addToCart = MutableStateFlow<Resource<CartProducts>>(Resource.UnSpecified())
     val addToCart = _addToCart.asStateFlow()
 
+    private val _relatedProducts = MutableStateFlow<Resource<List<Product>>>(Resource.UnSpecified())
+    val relatedProducts = _relatedProducts.asStateFlow()
+
     fun addUpdateProduct(cartProduct: CartProducts) {
         // Check stock availability
         if (cartProduct.product.stock <= 0) {
@@ -178,5 +182,35 @@ class DetailViewmodel @Inject constructor(
                     _addToCart.emit(Resource.Error(e.message.toString()))
             }
         }
+    }
+
+    fun getRelatedProducts(currentProduct: Product) {
+        viewModelScope.launch { _relatedProducts.emit(Resource.Loading()) }
+
+        firestore.collection("Products")
+            .whereEqualTo("category", currentProduct.category)
+            .limit(10)
+            .get()
+            .addOnSuccessListener { result ->
+                val products = result.toObjects(Product::class.java)
+                // Filter out the current product and shuffle for variety
+                val relatedProducts = products
+                    .filter { it.id != currentProduct.id }
+                    .shuffled()
+                    .take(5) // Show maximum 5 related products
+
+                viewModelScope.launch {
+                    if (relatedProducts.isEmpty()) {
+                        _relatedProducts.emit(Resource.Error("Không có sản phẩm tương tự"))
+                    } else {
+                        _relatedProducts.emit(Resource.Success(relatedProducts))
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                viewModelScope.launch {
+                    _relatedProducts.emit(Resource.Error(exception.message.toString()))
+                }
+            }
     }
 }
