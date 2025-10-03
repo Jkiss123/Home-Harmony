@@ -84,6 +84,20 @@
             app:layout_constraintStart_toStartOf="@+id/linerLayout1_DetailProduct"
             app:layout_constraintTop_toBottomOf="@+id/linerLayout1_DetailProduct" />
 
+        <TextView
+            android:id="@+id/tvStockStatus"
+            style="@style/h3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:text="Còn hàng"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/g_green"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductDescription_ProductDetail" />
+
         <View
             android:id="@+id/viewLine_DetailProduct"
             android:layout_marginTop="10dp"
@@ -93,7 +107,7 @@
             android:layout_height="1dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvProductDescription_ProductDetail"
+            app:layout_constraintTop_toBottomOf="@+id/tvStockStatus"
             android:background="@color/g_line"/>
 
         <LinearLayout

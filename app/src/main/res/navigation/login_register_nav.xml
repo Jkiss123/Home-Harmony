@@ -39,6 +39,10 @@
             app:destination="@id/registerFragment"
             app:enterAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/accountOptionFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -51,4 +55,9 @@
             app:enterAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/accountOptionFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.example.furniturecloudy.present.fragments.loginRegister.ForgotPasswordFragment"
+        android:label="Quên mật khẩu"
+        tools:layout="@layout/fragment_forgot_password" />
 </navigation>

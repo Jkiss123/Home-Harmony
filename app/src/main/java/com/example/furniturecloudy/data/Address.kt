@@ -6,11 +6,12 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Address(
     val fullName : String,
-    val phone : String, // vì có số 0 ở đầu set string cho tiện
+    val phone : String,
     val wards : String,
     val district : String,
     val city: String,
-    val addressFull : String
+    val addressFull : String,
+    val id: String = ""
 ) : Parcelable{
-    constructor() : this("","","","","","")
+    constructor() : this("","","","","","","")
 }

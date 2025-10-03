@@ -56,12 +56,20 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.AddressViewHolder>() 
             onClick?.invoke(address)
         }
 
+        holder.binding.imageEditAddress.setOnClickListener {
+            onEditClick?.invoke(address)
+        }
+
+        holder.binding.imageDeleteAddress.setOnClickListener {
+            onDeleteClick?.invoke(address)
+        }
     }
 
     override fun getItemCount(): Int {
-
         return differ.currentList.size
     }
 
     var onClick: ((Address) -> Unit)? = null
+    var onEditClick: ((Address) -> Unit)? = null
+    var onDeleteClick: ((Address) -> Unit)? = null
 }

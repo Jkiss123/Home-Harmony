@@ -1,6 +1,7 @@
 package com.example.furniturecloudy.present.fragments.shopping
 
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -67,6 +68,21 @@ class ProductDetailFragment : Fragment() {
             tvProductNameProductDetail.text = product.name
             tvProductPriceProductDetail.text = "$ ${product.price}"
             tvProductDescriptionProductDetail.text = product.description
+
+            // Display stock status
+            if (product.stock <= 0) {
+                tvStockStatus.text = "Hết hàng"
+                tvStockStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.g_red))
+                btnAddToCartDetailProdcut.isEnabled = false
+                btnAddToCartDetailProdcut.alpha = 0.5f
+            } else if (product.stock < 10) {
+                tvStockStatus.text = "Còn ${product.stock} sản phẩm"
+                tvStockStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.g_orange_yellow))
+            } else {
+                tvStockStatus.text = "Còn hàng"
+                tvStockStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.g_green))
+            }
+
             if (product.colors.isNullOrEmpty())
                 tvProductColor.visibility = View.GONE
             if (product.sizes.isNullOrEmpty())

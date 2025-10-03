@@ -13,7 +13,8 @@ data class Product(
     val description: String? = null,
     val colors: List<Int>? = null,
     val sizes: List<String>? = null,
-    val images: List<String>
+    val images: List<String>,
+    val stock: Int = 0 // Available stock quantity
 ): Parcelable{
-    constructor(): this ("0","","",0f,images = emptyList())
+    constructor(): this ("0","","",0f,images = emptyList(), stock = 0)
 }

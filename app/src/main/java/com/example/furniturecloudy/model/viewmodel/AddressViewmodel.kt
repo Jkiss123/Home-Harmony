@@ -22,30 +22,81 @@ class AddressViewmodel @Inject constructor(
     private val _addNewAddress = MutableStateFlow<Resource<Address>>(Resource.UnSpecified())
     val addNewAddress = _addNewAddress.asStateFlow()
 
+    private val _updateAddress = MutableStateFlow<Resource<Address>>(Resource.UnSpecified())
+    val updateAddress = _updateAddress.asStateFlow()
+
+    private val _deleteAddress = MutableStateFlow<Resource<String>>(Resource.UnSpecified())
+    val deleteAddress = _deleteAddress.asStateFlow()
+
     private val _error = MutableSharedFlow<String>()
     val error = _error.asSharedFlow()
 
     fun addAddress(address: Address){
-
         if (validateInputs(address)){
             viewModelScope.launch {
                 _addNewAddress.emit(Resource.Loading())
             }
-            firestore.collection("user").document(firebaseAuth.uid!!).collection("address").document()
-                .set(address).addOnSuccessListener {
-                    viewModelScope.launch {
-                        _addNewAddress.emit(Resource.Success(address))
-                    }
-                }.addOnFailureListener {
-                    viewModelScope.launch {
-                        _addNewAddress.emit(Resource.Error(it.message.toString()))
-                    }
+            val docRef = firestore.collection("user").document(firebaseAuth.uid!!).collection("address").document()
+            val addressWithId = address.copy(id = docRef.id)
+
+            docRef.set(addressWithId).addOnSuccessListener {
+                viewModelScope.launch {
+                    _addNewAddress.emit(Resource.Success(addressWithId))
                 }
+            }.addOnFailureListener {
+                viewModelScope.launch {
+                    _addNewAddress.emit(Resource.Error(it.message.toString()))
+                }
+            }
         }else{
             viewModelScope.launch {
                 _error.emit("Điền đầy đủ")
             }
         }
+    }
+
+    fun updateAddress(address: Address) {
+        if (validateInputs(address)) {
+            viewModelScope.launch {
+                _updateAddress.emit(Resource.Loading())
+            }
+            firestore.collection("user").document(firebaseAuth.uid!!)
+                .collection("address").document(address.id)
+                .set(address)
+                .addOnSuccessListener {
+                    viewModelScope.launch {
+                        _updateAddress.emit(Resource.Success(address))
+                    }
+                }
+                .addOnFailureListener {
+                    viewModelScope.launch {
+                        _updateAddress.emit(Resource.Error(it.message.toString()))
+                    }
+                }
+        } else {
+            viewModelScope.launch {
+                _error.emit("Điền đầy đủ")
+            }
+        }
+    }
+
+    fun deleteAddress(addressId: String) {
+        viewModelScope.launch {
+            _deleteAddress.emit(Resource.Loading())
+        }
+        firestore.collection("user").document(firebaseAuth.uid!!)
+            .collection("address").document(addressId)
+            .delete()
+            .addOnSuccessListener {
+                viewModelScope.launch {
+                    _deleteAddress.emit(Resource.Success(addressId))
+                }
+            }
+            .addOnFailureListener {
+                viewModelScope.launch {
+                    _deleteAddress.emit(Resource.Error(it.message.toString()))
+                }
+            }
     }
 
 

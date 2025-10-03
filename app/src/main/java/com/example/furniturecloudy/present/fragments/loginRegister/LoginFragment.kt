@@ -2,11 +2,14 @@ package com.example.furniturecloudy.present.fragments.loginRegister
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,8 +20,13 @@ import com.example.furniturecloudy.databinding.FragmentLoginBinding
 import com.example.furniturecloudy.model.viewmodel.LoginViewmodel
 import com.example.furniturecloudy.present.ShoppingActivity
 import com.example.furniturecloudy.util.Resource
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,6 +35,29 @@ import kotlinx.coroutines.launch
 class LoginFragment : Fragment() {
     private lateinit var binding:FragmentLoginBinding
     private val viewmodel:LoginViewmodel by viewModels()
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Configure Google Sign-In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+
+        // Register for activity result
+        googleSignInLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            handleGoogleSignInResult(task)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +78,15 @@ class LoginFragment : Fragment() {
             }
             txtvSlogan2Login.setOnClickListener {
                 findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+            }
+            txtQuenMatKhauLogin.setOnClickListener {
+                findNavController().navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
+            }
+            btnLoginGoogle.setOnClickListener {
+                signInWithGoogle()
+            }
+            btnLoginFacebook.setOnClickListener {
+                Toast.makeText(requireContext(), "Facebook đăng nhập sẽ được triển khai sau", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -75,5 +115,23 @@ class LoginFragment : Fragment() {
             }
     }
 
+    private fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        googleSignInLauncher.launch(signInIntent)
+    }
 
+    private fun handleGoogleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+            val idToken = account?.idToken
+            if (idToken != null) {
+                viewmodel.signInWithGoogle(idToken)
+            } else {
+                Toast.makeText(requireContext(), "Không thể lấy thông tin Google. Vui lòng thử lại.", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: ApiException) {
+            Log.w("LoginFragment", "Google sign in failed", e)
+            Toast.makeText(requireContext(), "Đăng nhập Google thất bại: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
 }

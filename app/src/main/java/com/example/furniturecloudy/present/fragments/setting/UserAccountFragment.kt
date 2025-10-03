@@ -1,5 +1,6 @@
 package com.example.furniturecloudy.present.fragments.setting
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -19,7 +20,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.furniturecloudy.R
 import com.example.furniturecloudy.data.User
+import com.example.furniturecloudy.databinding.DialogChangePasswordBinding
 import com.example.furniturecloudy.databinding.FragmentAccessoryBinding
 import com.example.furniturecloudy.databinding.FragmentUserAccountBinding
 import com.example.furniturecloudy.model.viewmodel.UserAccountViewmodel
@@ -33,6 +36,7 @@ class UserAccountFragment : Fragment() {
     private val viewModel: UserAccountViewmodel by viewModels()
     private var imageUri: Uri? = null
     private lateinit var imageActivityResultLauncher : ActivityResultLauncher<Intent>
+    private var changePasswordDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,9 +115,85 @@ class UserAccountFragment : Fragment() {
             imageActivityResultLauncher.launch(intent)
         }
 
+        binding.tvUpdatePassword.setOnClickListener {
+            showChangePasswordDialog()
+        }
 
+        binding.imageCloseUserAccount.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
+        // Observe password change once in onViewCreated
+        observePasswordChange()
+    }
 
+    private fun showChangePasswordDialog() {
+        val dialogBinding = DialogChangePasswordBinding.inflate(LayoutInflater.from(requireContext()))
+        changePasswordDialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        changePasswordDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        dialogBinding.btnCancelChangePassword.setOnClickListener {
+            changePasswordDialog?.dismiss()
+        }
+
+        dialogBinding.btnConfirmChangePassword.setOnClickListener {
+            val currentPassword = dialogBinding.edtCurrentPassword.text.toString()
+            val newPassword = dialogBinding.edtNewPassword.text.toString()
+            val confirmPassword = dialogBinding.edtConfirmPassword.text.toString()
+
+            when {
+                currentPassword.isEmpty() -> {
+                    Toast.makeText(requireContext(), "Vui lòng nhập mật khẩu hiện tại", Toast.LENGTH_SHORT).show()
+                }
+                newPassword.isEmpty() -> {
+                    Toast.makeText(requireContext(), "Vui lòng nhập mật khẩu mới", Toast.LENGTH_SHORT).show()
+                }
+                newPassword.length < 6 -> {
+                    Toast.makeText(requireContext(), "Mật khẩu mới phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show()
+                }
+                newPassword != confirmPassword -> {
+                    Toast.makeText(requireContext(), "Mật khẩu xác nhận không khớp", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    viewModel.changeUserPassword(currentPassword, newPassword)
+                }
+            }
+        }
+
+        changePasswordDialog?.show()
+    }
+
+    private fun observePasswordChange() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.changePassword.collectLatest {
+                    when (it) {
+                        is Resource.Error -> {
+                            changePasswordDialog?.findViewById<com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton>(
+                                R.id.btnConfirmChangePassword
+                            )?.revertAnimation()
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        }
+                        is Resource.Loading -> {
+                            changePasswordDialog?.findViewById<com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton>(
+                                R.id.btnConfirmChangePassword
+                            )?.startAnimation()
+                        }
+                        is Resource.Success -> {
+                            changePasswordDialog?.findViewById<com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton>(
+                                R.id.btnConfirmChangePassword
+                            )?.revertAnimation()
+                            Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                            changePasswordDialog?.dismiss()
+                        }
+                        else -> Unit
+                    }
+                }
+            }
+        }
     }
 
     private fun showUserData(data: User) {

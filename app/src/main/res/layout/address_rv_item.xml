@@ -1,11 +1,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonAddress"
-        android:layout_width="110dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:background="@drawable/unselected_button_background"
         android:clickable="true"
@@ -14,9 +15,35 @@
         android:textAllCaps="false"
         android:textColor="@color/g_blue_gray200"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@id/imageEditAddress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageEditAddress"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_edit"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="4dp"
+        app:tint="@color/g_blue"
+        app:layout_constraintBottom_toBottomOf="@id/buttonAddress"
+        app:layout_constraintEnd_toStartOf="@id/imageDeleteAddress"
+        app:layout_constraintTop_toTopOf="@id/buttonAddress" />
+
+    <ImageView
+        android:id="@+id/imageDeleteAddress"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_close"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="4dp"
+        app:tint="@color/g_red"
+        app:layout_constraintBottom_toBottomOf="@id/buttonAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/buttonAddress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,7 @@ import com.example.furniturecloudy.data.User
 import com.example.furniturecloudy.util.RegisterValidation
 import com.example.furniturecloudy.util.Resource
 import com.example.furniturecloudy.util.validateEmail
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
@@ -38,6 +39,9 @@ class UserAccountViewmodel @Inject constructor(
 
      private val _updateInfo = MutableStateFlow<Resource<User>>(Resource.UnSpecified())
      val updateInfor = _updateInfo.asStateFlow()
+
+     private val _changePassword = MutableStateFlow<Resource<String>>(Resource.UnSpecified())
+     val changePassword = _changePassword.asStateFlow()
 
      init {
          getUser()
@@ -119,5 +123,42 @@ class UserAccountViewmodel @Inject constructor(
                  _updateInfo.emit(Resource.Error("Điền đầy đủ"))
              }
          }
+     }
+
+     fun changeUserPassword(currentPassword: String, newPassword: String) {
+         viewModelScope.launch {
+             _changePassword.emit(Resource.Loading())
+         }
+
+         val user = firebaseAuth.currentUser
+         if (user == null || user.email == null) {
+             viewModelScope.launch {
+                 _changePassword.emit(Resource.Error("Không tìm thấy người dùng"))
+             }
+             return
+         }
+
+         // Reauthenticate user before changing password
+         val credential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
+         user.reauthenticate(credential)
+             .addOnSuccessListener {
+                 // Update password
+                 user.updatePassword(newPassword)
+                     .addOnSuccessListener {
+                         viewModelScope.launch {
+                             _changePassword.emit(Resource.Success("Đổi mật khẩu thành công"))
+                         }
+                     }
+                     .addOnFailureListener { exception ->
+                         viewModelScope.launch {
+                             _changePassword.emit(Resource.Error(exception.message ?: "Đổi mật khẩu thất bại"))
+                         }
+                     }
+             }
+             .addOnFailureListener { exception ->
+                 viewModelScope.launch {
+                     _changePassword.emit(Resource.Error("Mật khẩu hiện tại không đúng"))
+                 }
+             }
      }
  }

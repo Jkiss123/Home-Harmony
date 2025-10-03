@@ -24,6 +24,7 @@ import com.example.furniturecloudy.databinding.FragmentAddressBinding
 import com.example.furniturecloudy.databinding.FragmentBillingBinding
 import com.example.furniturecloudy.model.adapter.AddressAdapter
 import com.example.furniturecloudy.model.adapter.BillingProductAdapter
+import com.example.furniturecloudy.model.viewmodel.AddressViewmodel
 import com.example.furniturecloudy.model.viewmodel.BillingViewmodel
 import com.example.furniturecloudy.model.viewmodel.OrderViewmodel
 import com.example.furniturecloudy.util.HorizontalcalItemDecoration
@@ -45,6 +46,7 @@ class BillingFragment : Fragment() {
     private var totalPrice : Float = 0f
     private var selectedAddress : Address? = null
     private val orderViewModel  by viewModels<OrderViewmodel>()
+    private val addressViewmodel by viewModels<AddressViewmodel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +67,7 @@ class BillingFragment : Fragment() {
 
         setupBillingAdapter()
         setupAddressAdapter()
+        observeDeleteAddress()
         //
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -95,6 +98,16 @@ class BillingFragment : Fragment() {
         addresAdapter.onClick = {
             selectedAddress = it
         }
+
+        addresAdapter.onEditClick = { address ->
+            val action = BillingFragmentDirections.actionBillingFragmentToAddressFragment()
+            findNavController().navigate(action)
+        }
+
+        addresAdapter.onDeleteClick = { address ->
+            showDeleteAddressDialog(address)
+        }
+
         binding.buttonPlaceOrder.setOnClickListener {
             if (selectedAddress == null){
                 Toast.makeText(requireContext(),"Chọn địa chỉ giao hàng",Toast.LENGTH_SHORT).show()
@@ -155,6 +168,39 @@ class BillingFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
             adapter = addresAdapter
             addItemDecoration(HorizontalcalItemDecoration())
+        }
+    }
+
+    private fun showDeleteAddressDialog(address: Address) {
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle("Xóa địa chỉ")
+            setMessage("Bạn có chắc chắn muốn xóa địa chỉ này?")
+            setNegativeButton("Hủy") { dialog, _ ->
+                dialog.dismiss()
+            }
+            setPositiveButton("Xóa") { dialog, _ ->
+                addressViewmodel.deleteAddress(address.id)
+                dialog.dismiss()
+            }
+        }.create().show()
+    }
+
+    private fun observeDeleteAddress() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                addressViewmodel.deleteAddress.collectLatest {
+                    when (it) {
+                        is Resource.Success -> {
+                            Toast.makeText(requireContext(), "Đã xóa địa chỉ", Toast.LENGTH_SHORT).show()
+                            // No need to manually refresh - addSnapshotListener auto-updates
+                        }
+                        is Resource.Error -> {
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        }
+                        else -> Unit
+                    }
+                }
+            }
         }
     }
 }

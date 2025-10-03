@@ -5,4 +5,8 @@
     <string name="introductSlogant">Địa chỉ uy tín\nmua sắm\nmỗi ngày</string>
     <string name="introductSlogant2">Niềm vui của khách hàng\nlà sự ưu tiên hàng đầu của chúng tôi</string>
     <string name="owner">ĐặngHuy</string>
+
+    <!-- Google Sign-In - This will be auto-generated from google-services.json -->
+    <!-- You need to get this from Firebase Console > Project Settings > General > Your apps > Web API Key -->
+    <string name="default_web_client_id" translatable="false">YOUR_WEB_CLIENT_ID_HERE</string>
 </resources>

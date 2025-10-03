@@ -108,6 +108,14 @@ class DetailViewmodel @Inject constructor(
     val addToCart = _addToCart.asStateFlow()
 
     fun addUpdateProduct(cartProduct: CartProducts) {
+        // Check stock availability
+        if (cartProduct.product.stock <= 0) {
+            viewModelScope.launch {
+                _addToCart.emit(Resource.Error("Sản phẩm đã hết hàng"))
+            }
+            return
+        }
+
         viewModelScope.launch { _addToCart.emit(Resource.Loading()) }
         firestore.collection("user").document(auth.uid!!).collection("cart")
             .whereEqualTo("product.id", cartProduct.product.id).get()
@@ -116,13 +124,21 @@ class DetailViewmodel @Inject constructor(
                     if (it.isEmpty()) { //Add new product
                         addNewProduct(cartProduct)
                     } else {
-                        // Lỗi đang ở đây
                         val product = it.first().toObject(CartProducts::class.java)
 
-                        if(product!!.product == cartProduct.product && product.color == cartProduct.color && product.size== cartProduct.size){ //Increase the quantity (fixed quantity increasement issue)
+                        if(product!!.product == cartProduct.product && product.color == cartProduct.color && product.size== cartProduct.size){ //Increase the quantity
                             Log.d("Loidebug","Thêm vào sẵn ")
                             val documentId = it.first().id
-                            increaseQuantity(documentId, cartProduct)
+
+                            // Check if increasing quantity exceeds stock
+                            val newQuantity = product.quantity + 1
+                            if (newQuantity > cartProduct.product.stock) {
+                                viewModelScope.launch {
+                                    _addToCart.emit(Resource.Error("Không đủ hàng trong kho. Chỉ còn ${cartProduct.product.stock} sản phẩm"))
+                                }
+                            } else {
+                                increaseQuantity(documentId, cartProduct)
+                            }
                         } else { //Add new product
                             Log.d("Loidebug","Thêm vào sẵn lỗi ")
                             addNewProduct(cartProduct)
@@ -135,6 +151,14 @@ class DetailViewmodel @Inject constructor(
     }
 
     private fun addNewProduct(cartProduct: CartProducts) {
+        // Check if quantity to add exceeds stock
+        if (cartProduct.quantity > cartProduct.product.stock) {
+            viewModelScope.launch {
+                _addToCart.emit(Resource.Error("Không đủ hàng trong kho. Chỉ còn ${cartProduct.product.stock} sản phẩm"))
+            }
+            return
+        }
+
         firebaseCommon.addProductToCart(cartProduct) { addedProduct, e ->
             viewModelScope.launch {
                 if (e == null)
