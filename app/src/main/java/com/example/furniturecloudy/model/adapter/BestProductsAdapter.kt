@@ -18,6 +18,16 @@ class BestProductsAdapter() : RecyclerView.Adapter<BestProductsAdapter.BestProdu
                 Glide.with(itemView).load(product.images[0]).into(imgProduct)
                 tvName.text = product.name
                 tvPrice.text = "$ ${product.price.toString()}"
+
+                // Display rating
+                if (product.averageRating > 0f) {
+                    ratingBarProduct.rating = product.averageRating
+                    tvProductRating.text = String.format("%.1f", product.averageRating)
+                } else {
+                    ratingBarProduct.rating = 0f
+                    tvProductRating.text = "0.0"
+                }
+
                 if(product.offerPercentage == null){
                     tvNewPrice.visibility = View.GONE
                 }else {

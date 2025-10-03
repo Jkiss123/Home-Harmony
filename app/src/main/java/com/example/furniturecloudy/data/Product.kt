@@ -14,7 +14,9 @@ data class Product(
     val colors: List<Int>? = null,
     val sizes: List<String>? = null,
     val images: List<String>,
-    val stock: Int = 0 // Available stock quantity
+    val stock: Int = 0, // Available stock quantity
+    val averageRating: Float = 0f, // Cached average rating
+    val reviewCount: Int = 0 // Cached review count
 ): Parcelable{
-    constructor(): this ("0","","",0f,images = emptyList(), stock = 0)
+    constructor(): this ("0","","",0f,images = emptyList(), stock = 0, averageRating = 0f, reviewCount = 0)
 }

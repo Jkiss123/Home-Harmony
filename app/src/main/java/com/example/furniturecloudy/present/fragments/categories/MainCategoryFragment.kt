@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.furniturecloudy.R
 import com.example.furniturecloudy.databinding.FragmentMainCategoryBinding
+import com.example.furniturecloudy.database.repository.RecentlyViewedRepository
 import com.example.furniturecloudy.model.adapter.BestDealsAdapter
 import com.example.furniturecloudy.model.adapter.BestProductsAdapter
 import com.example.furniturecloudy.model.adapter.SpecialDealsAdapter
@@ -24,7 +25,9 @@ import com.example.furniturecloudy.model.viewmodel.MainCategoryViewmodel
 import com.example.furniturecloudy.util.Resource
 import com.example.furniturecloudy.util.showBottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 private val TAG = "MainCategoryFragment"
 @AndroidEntryPoint
 class MainCategoryFragment : Fragment() {
@@ -32,7 +35,11 @@ class MainCategoryFragment : Fragment() {
     private lateinit var adapterSpecialDealsAdapter: SpecialDealsAdapter
     private lateinit var adapterBestProductsAdapter: BestProductsAdapter
     private lateinit var adapterBestDealsAdapter: BestDealsAdapter
+    private lateinit var adapterRecentlyViewedAdapter: BestProductsAdapter
     private val viewmodel:MainCategoryViewmodel by viewModels()
+
+    @Inject
+    lateinit var recentlyViewedRepository: RecentlyViewedRepository
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +54,8 @@ class MainCategoryFragment : Fragment() {
         setupSpecialDealsAdapter()
         setupBestDealsAdapter()
         setupBestProducsAdapter()
+        setupRecentlyViewedAdapter()
+
         adapterSpecialDealsAdapter.onClick = {
             val bundle = Bundle().apply { putParcelable("product",it) }
             findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,bundle)
@@ -58,6 +67,26 @@ class MainCategoryFragment : Fragment() {
         adapterBestDealsAdapter.onClick = {
             val bundle = Bundle().apply { putParcelable("product",it) }
             findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,bundle)
+        }
+        adapterRecentlyViewedAdapter.onClick = {
+            val bundle = Bundle().apply { putParcelable("product",it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,bundle)
+        }
+
+        // Observe Recently Viewed products
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                recentlyViewedRepository.getRecentlyViewedProducts().collectLatest { products ->
+                    if (products.isNotEmpty()) {
+                        binding.tvRecentlyViewed.visibility = View.VISIBLE
+                        binding.recvRecentlyViewed.visibility = View.VISIBLE
+                        adapterRecentlyViewedAdapter.differ.submitList(products)
+                    } else {
+                        binding.tvRecentlyViewed.visibility = View.GONE
+                        binding.recvRecentlyViewed.visibility = View.GONE
+                    }
+                }
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -155,6 +184,14 @@ class MainCategoryFragment : Fragment() {
         binding.recvSpecialProducts.apply {
              layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
             adapter = adapterSpecialDealsAdapter
+        }
+    }
+
+    private fun setupRecentlyViewedAdapter() {
+        adapterRecentlyViewedAdapter = BestProductsAdapter()
+        binding.recvRecentlyViewed.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = adapterRecentlyViewedAdapter
         }
     }
 

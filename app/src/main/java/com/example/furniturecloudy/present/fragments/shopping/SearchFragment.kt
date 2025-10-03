@@ -15,7 +15,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.furniturecloudy.R
+import android.widget.ArrayAdapter
 import com.example.furniturecloudy.data.Product
+import com.example.furniturecloudy.database.repository.SearchHistoryRepository
 import com.example.furniturecloudy.databinding.FragmentSearchBinding
 import com.example.furniturecloudy.model.adapter.BestDealsAdapter
 import com.example.furniturecloudy.model.viewmodel.SearchViewmodel
@@ -24,6 +26,7 @@ import com.example.furniturecloudy.util.showBottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -31,6 +34,9 @@ class SearchFragment : Fragment() {
     private val bestDealsAdapter by lazy { BestDealsAdapter() }
     private val viewmodel : SearchViewmodel by viewModels()
     private var isSearching = false
+
+    @Inject
+    lateinit var searchHistoryRepository: SearchHistoryRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,8 +71,14 @@ class SearchFragment : Fragment() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
-                    isSearching = it.isNotEmpty()
-                    viewmodel.searchProducts(it)
+                    if (it.isNotEmpty()) {
+                        isSearching = true
+                        viewmodel.searchProducts(it)
+                        // Save to search history
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            searchHistoryRepository.addSearch(it)
+                        }
+                    }
                 }
                 return true
             }

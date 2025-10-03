@@ -19,11 +19,17 @@ import com.example.furniturecloudy.data.CartProducts
 import com.example.furniturecloudy.data.Product
 import com.example.furniturecloudy.databinding.FragmentProductDetailBinding
 import com.example.furniturecloudy.databinding.SizeRvItemBinding
+import android.app.AlertDialog
+import com.example.furniturecloudy.databinding.DialogAddReviewBinding
 import com.example.furniturecloudy.model.adapter.BestProductsAdapter
 import com.example.furniturecloudy.model.adapter.ColorsAdapter
+import com.example.furniturecloudy.model.adapter.ReviewAdapter
 import com.example.furniturecloudy.model.adapter.SizesAdapter
 import com.example.furniturecloudy.model.adapter.ViewPagerDPAdapter
+import com.example.furniturecloudy.database.repository.RecentlyViewedRepository
 import com.example.furniturecloudy.model.viewmodel.DetailViewmodel
+import com.example.furniturecloudy.model.viewmodel.ReviewViewmodel
+import com.example.furniturecloudy.model.viewmodel.ProfileViewmodel
 import com.example.furniturecloudy.present.ShoppingActivity
 import com.example.furniturecloudy.util.Resource
 import com.example.furniturecloudy.util.hideBottomNavigationView
@@ -31,6 +37,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProductDetailFragment : Fragment() {
@@ -40,7 +47,16 @@ class ProductDetailFragment : Fragment() {
     private val sizeAdapter by lazy { SizesAdapter() }
     private val colorAdapter by lazy { ColorsAdapter() }
     private val relatedProductsAdapter by lazy { BestProductsAdapter() }
+    private val reviewAdapter by lazy { ReviewAdapter() }
     private val viewModel : DetailViewmodel by viewModels()
+    private val reviewViewModel : ReviewViewmodel by viewModels()
+    private val profileViewModel : ProfileViewmodel by viewModels()
+
+    @Inject
+    lateinit var recentlyViewedRepository: RecentlyViewedRepository
+
+    private var addReviewDialog: AlertDialog? = null
+
     //AddtoCart
     private var selectedColor:Int? =null
     private var selectedSize:String? =null
@@ -62,10 +78,24 @@ class ProductDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val product = args.product
 
+        // Save product to recently viewed
+        viewLifecycleOwner.lifecycleScope.launch {
+            recentlyViewedRepository.addRecentlyViewed(product)
+        }
+
         setupSizeRV()
         setupColorRV()
         setupImagePager()
         setupRelatedProductsRV()
+        setupReviewsRV()
+
+        // Load reviews
+        reviewViewModel.getReviewsForProduct(product.id)
+
+        // Add review button click
+        binding.tvAddReview.setOnClickListener {
+            showAddReviewDialog(product.id)
+        }
 
         binding.apply {
             tvProductNameProductDetail.text = product.name
@@ -167,6 +197,80 @@ class ProductDetailFragment : Fragment() {
             }
         }
 
+        // Observe reviews
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                reviewViewModel.reviews.collect { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            val reviews = resource.data ?: emptyList()
+                            if (reviews.isEmpty()) {
+                                binding.rvReviews.visibility = View.GONE
+                                binding.tvNoReviews.visibility = View.VISIBLE
+                            } else {
+                                binding.rvReviews.visibility = View.VISIBLE
+                                binding.tvNoReviews.visibility = View.GONE
+                                reviewAdapter.differ.submitList(reviews)
+                            }
+                        }
+                        is Resource.Error -> {
+                            binding.rvReviews.visibility = View.GONE
+                            binding.tvNoReviews.visibility = View.VISIBLE
+                        }
+                        else -> Unit
+                    }
+                }
+            }
+        }
+
+        // Observe average rating
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                reviewViewModel.averageRating.collect { rating ->
+                    binding.tvAverageRating.text = String.format("%.1f", rating)
+                    binding.ratingBarAverage.rating = rating
+                }
+            }
+        }
+
+        // Observe review count
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                reviewViewModel.reviewCount.collect { count ->
+                    binding.tvReviewCount.text = "$count đánh giá"
+                }
+            }
+        }
+
+        // Observe add review result
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                reviewViewModel.addReview.collect { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            addReviewDialog?.findViewById<com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton>(
+                                R.id.btnSubmitReview
+                            )?.startAnimation()
+                        }
+                        is Resource.Success -> {
+                            addReviewDialog?.findViewById<com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton>(
+                                R.id.btnSubmitReview
+                            )?.revertAnimation()
+                            Toast.makeText(requireContext(), "Cảm ơn bạn đã đánh giá!", Toast.LENGTH_SHORT).show()
+                            addReviewDialog?.dismiss()
+                            reviewViewModel.resetAddReviewState()
+                        }
+                        is Resource.Error -> {
+                            addReviewDialog?.findViewById<com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton>(
+                                R.id.btnSubmitReview
+                            )?.revertAnimation()
+                            Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
+                        }
+                        else -> Unit
+                    }
+                }
+            }
+        }
 
     }
 
@@ -198,6 +302,55 @@ class ProductDetailFragment : Fragment() {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = relatedProductsAdapter
         }
+    }
+
+    private fun setupReviewsRV() {
+        binding.rvReviews.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = reviewAdapter
+        }
+    }
+
+    private fun showAddReviewDialog(productId: String) {
+        val dialogBinding = DialogAddReviewBinding.inflate(LayoutInflater.from(requireContext()))
+
+        addReviewDialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        dialogBinding.tvCancelReview.setOnClickListener {
+            addReviewDialog?.dismiss()
+        }
+
+        dialogBinding.btnSubmitReview.setOnClickListener {
+            val rating = dialogBinding.ratingBarDialog.rating
+            val comment = dialogBinding.edtReviewComment.text.toString().trim()
+
+            if (rating == 0f) {
+                Toast.makeText(requireContext(), "Vui lòng chọn số sao", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (comment.isEmpty()) {
+                Toast.makeText(requireContext(), "Vui lòng nhập nhận xét", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Get user info and submit review
+            viewLifecycleOwner.lifecycleScope.launch {
+                profileViewModel.user.collect { resource ->
+                    if (resource is Resource.Success) {
+                        val user = resource.data!!
+                        val userName = "${user.firstName} ${user.lastName}".trim()
+                        val userImage = user.imagePath
+
+                        reviewViewModel.addReview(productId, rating, comment, userName, userImage)
+                    }
+                }
+            }
+        }
+
+        addReviewDialog?.show()
     }
 
 

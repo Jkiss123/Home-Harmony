@@ -2,6 +2,8 @@ package com.example.furniturecloudy.di
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
+import androidx.room.Room
+import com.example.furniturecloudy.database.FurnitureDatabase
 import com.example.furniturecloudy.model.firebase.FirebaseCommon
 import com.example.furniturecloudy.util.Constants.INTRODUCTION_SP
 import com.google.firebase.Firebase
@@ -36,4 +38,22 @@ object Module {
     @Provides
     @Singleton
     fun provideFirebaseStorage() = FirebaseStorage.getInstance().reference
+
+    @Provides
+    @Singleton
+    fun provideFurnitureDatabase(application: Application): FurnitureDatabase {
+        return Room.databaseBuilder(
+            application,
+            FurnitureDatabase::class.java,
+            "furniture_database"
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchHistoryDao(database: FurnitureDatabase) = database.searchHistoryDao()
+
+    @Provides
+    @Singleton
+    fun provideRecentlyViewedDao(database: FurnitureDatabase) = database.recentlyViewedDao()
 }

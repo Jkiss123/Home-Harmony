@@ -54,6 +54,32 @@
         </LinearLayout>
 
 
+        <RatingBar
+            android:id="@+id/ratingBarProduct"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="0"
+            android:stepSize="0.1"
+            app:layout_constraintStart_toStartOf="@id/img_product"
+            app:layout_constraintTop_toBottomOf="@id/linear_product_name" />
+
+        <TextView
+            android:id="@+id/tvProductRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/sf_pro_display"
+            android:text="0.0"
+            android:textColor="@color/g_gray700"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@id/ratingBarProduct"
+            app:layout_constraintStart_toEndOf="@id/ratingBarProduct"
+            app:layout_constraintTop_toTopOf="@id/ratingBarProduct" />
+
         <TextView
             android:id="@+id/tv_new_price"
             android:layout_width="wrap_content"
@@ -66,7 +92,7 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_price"
-            app:layout_constraintTop_toBottomOf="@id/linear_product_name"
+            app:layout_constraintTop_toBottomOf="@id/ratingBarProduct"
             android:layout_marginStart="10dp"/>
 
         <TextView
@@ -81,7 +107,7 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/img_product"
-            app:layout_constraintTop_toBottomOf="@id/linear_product_name" />
+            app:layout_constraintTop_toBottomOf="@id/ratingBarProduct" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

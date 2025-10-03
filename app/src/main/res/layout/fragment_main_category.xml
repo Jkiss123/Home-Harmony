@@ -39,6 +39,30 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/tvRecentlyViewed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_thin"
+                android:layout_marginTop="20dp"
+                android:text="Sản phẩm đã xem"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recvSpecialProducts" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recvRecentlyViewed"
+                android:layout_width="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/recvSpecialProducts"
+                app:layout_constraintTop_toBottomOf="@id/tvRecentlyViewed"/>
+
+            <TextView
                 android:id="@+id/tvBestDeal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,7 +73,7 @@
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recvSpecialProducts" />
+                app:layout_constraintTop_toBottomOf="@+id/recvRecentlyViewed" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recvBestDeals"
