@@ -15,6 +15,9 @@ data class Order(
     val totalPrice: Float = 0f,
     val products: List<CartProducts> = emptyList(),
     val address: Address = Address(),
-    val date: String = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(Date()),
-    val orderId: Long = Random.nextLong(0,100_000_000_000) + totalPrice.toLong()
+    val date: String = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(Date()),
+    val orderId: String = "ORD-${SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH).format(Date())}-${Random.nextInt(10000, 99999)}",
+    val paymentMethod: String = "COD", // "COD", "MoMo", "VNPay", "ZaloPay"
+    val paymentStatus: String = "PENDING", // "PENDING", "PAID", "FAILED", "REFUNDED"
+    val paymentTransactionId: String? = null // Transaction ID from payment gateway
 ): Parcelable

@@ -45,6 +45,10 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_userAccountFragment)
         }
 
+        binding.linearWishlist.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_wishlistFragment)
+        }
+
         binding.linearAllOrders.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_ordersFragment)
         }

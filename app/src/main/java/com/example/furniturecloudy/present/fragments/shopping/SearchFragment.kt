@@ -18,8 +18,10 @@ import com.example.furniturecloudy.R
 import android.widget.ArrayAdapter
 import com.example.furniturecloudy.data.Product
 import com.example.furniturecloudy.database.repository.SearchHistoryRepository
+import com.example.furniturecloudy.data.ProductFilter
 import com.example.furniturecloudy.databinding.FragmentSearchBinding
 import com.example.furniturecloudy.model.adapter.BestDealsAdapter
+import com.example.furniturecloudy.model.adapter.SearchHistoryAdapter
 import com.example.furniturecloudy.model.viewmodel.SearchViewmodel
 import com.example.furniturecloudy.util.Resource
 import com.example.furniturecloudy.util.showBottomNavigationView
@@ -32,6 +34,7 @@ import javax.inject.Inject
 class SearchFragment : Fragment() {
     private lateinit var binding : FragmentSearchBinding
     private val bestDealsAdapter by lazy { BestDealsAdapter() }
+    private val searchHistoryAdapter by lazy { SearchHistoryAdapter() }
     private val viewmodel : SearchViewmodel by viewModels()
     private var isSearching = false
 
@@ -50,9 +53,12 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRv()
+        setupSearchHistoryRv()
         setupSearchView()
+        setupFilterButton()
         observeProducts()
         observeSearchResults()
+        observeSearchHistory()
 
         bestDealsAdapter.onClick = {
             val bundle = Bundle().apply { putParcelable("product",it) }
@@ -166,6 +172,66 @@ class SearchFragment : Fragment() {
         binding.recvSearch.apply {
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
             adapter = bestDealsAdapter
+        }
+    }
+
+    private fun setupSearchHistoryRv() {
+        binding.rvRecentSearches.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = searchHistoryAdapter
+        }
+
+        searchHistoryAdapter.onSearchClick = { query ->
+            binding.searchView.setQuery(query, true)
+        }
+
+        searchHistoryAdapter.onDeleteClick = { searchHistory ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                searchHistoryRepository.deleteSearch(searchHistory)
+            }
+        }
+    }
+
+    private fun setupFilterButton() {
+        binding.fabFilter.setOnClickListener {
+            val filterBottomSheet = FilterBottomSheetFragment.newInstance(viewmodel.getCurrentFilter())
+            filterBottomSheet.onFilterApplied = { filter ->
+                viewmodel.applyFilter(filter)
+                updateFilterChip(filter)
+            }
+            filterBottomSheet.show(childFragmentManager, "FilterBottomSheet")
+        }
+
+        binding.chipActiveFilter.setOnCloseIconClickListener {
+            viewmodel.applyFilter(ProductFilter())
+            binding.layoutFilterChips.visibility = View.GONE
+        }
+    }
+
+    private fun updateFilterChip(filter: ProductFilter) {
+        if (filter.isActive()) {
+            val count = filter.getActiveFilterCount()
+            binding.chipActiveFilter.text = "Đang lọc ($count)"
+            binding.layoutFilterChips.visibility = View.VISIBLE
+        } else {
+            binding.layoutFilterChips.visibility = View.GONE
+        }
+    }
+
+    private fun observeSearchHistory() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchHistoryRepository.getRecentSearches(limit = 10).collectLatest { searches ->
+                    if (searches.isNotEmpty()) {
+                        searchHistoryAdapter.differ.submitList(searches)
+                        binding.tvRecentSearches.visibility = View.VISIBLE
+                        binding.rvRecentSearches.visibility = View.VISIBLE
+                    } else {
+                        binding.tvRecentSearches.visibility = View.GONE
+                        binding.rvRecentSearches.visibility = View.GONE
+                    }
+                }
+            }
         }
     }
 

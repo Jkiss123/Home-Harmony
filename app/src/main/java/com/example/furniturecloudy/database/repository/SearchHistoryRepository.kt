@@ -15,6 +15,10 @@ class SearchHistoryRepository @Inject constructor(
         return searchHistoryDao.getRecentSearches()
     }
 
+    fun getRecentSearches(limit: Int): Flow<List<SearchHistory>> {
+        return searchHistoryDao.getRecentSearchesWithLimit(limit)
+    }
+
     suspend fun getSuggestions(prefix: String): List<String> {
         return if (prefix.isBlank()) {
             emptyList()
@@ -36,6 +40,10 @@ class SearchHistoryRepository @Inject constructor(
 
     suspend fun deleteSearch(query: String) {
         searchHistoryDao.deleteSearch(query)
+    }
+
+    suspend fun deleteSearch(searchHistory: SearchHistory) {
+        searchHistoryDao.deleteSearch(searchHistory.query)
     }
 
     suspend fun clearHistory() {

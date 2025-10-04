@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.furniturecloudy.data.PagingInfo
 import com.example.furniturecloudy.data.Product
+import com.example.furniturecloudy.data.ProductFilter
+import com.example.furniturecloudy.data.SortOption
 import com.example.furniturecloudy.util.Resource
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +27,7 @@ class SearchViewmodel @Inject constructor(private val firestore: FirebaseFiresto
     private val pagingInfo  = PagingInfo()
     private var allProducts = mutableListOf<Product>()
     private var currentSearchQuery = ""
+    private var currentFilter = ProductFilter()
 
     init {
         getProducts()
@@ -103,16 +106,7 @@ class SearchViewmodel @Inject constructor(private val firestore: FirebaseFiresto
     }
 
     private fun filterProducts(query: String) {
-        val queryLowerCase = query.lowercase(Locale.getDefault())
-
-        val filteredList = allProducts.filter { product ->
-            product.name?.lowercase(Locale.getDefault())?.contains(queryLowerCase) == true ||
-            product.category?.lowercase(Locale.getDefault())?.contains(queryLowerCase) == true
-        }
-
-        viewModelScope.launch {
-            _searchResults.emit(Resource.Success(filteredList))
-        }
+        filterAndSortProducts()
     }
 
     fun resetSearch() {
@@ -128,6 +122,68 @@ class SearchViewmodel @Inject constructor(private val firestore: FirebaseFiresto
         pagingInfo.lastVisibleDocument = null
         pagingInfo.oldProduct = emptyList()
         allProducts.clear()
+    }
+
+    fun applyFilter(filter: ProductFilter) {
+        currentFilter = filter
+        filterAndSortProducts()
+    }
+
+    fun getCurrentFilter(): ProductFilter = currentFilter
+
+    private fun filterAndSortProducts() {
+        viewModelScope.launch {
+            _searchResults.emit(Resource.Loading())
+        }
+
+        var filteredList = allProducts.toList()
+
+        // Apply search query
+        if (currentSearchQuery.isNotEmpty()) {
+            val queryLowerCase = currentSearchQuery.lowercase(Locale.getDefault())
+            filteredList = filteredList.filter { product ->
+                product.name.lowercase(Locale.getDefault()).contains(queryLowerCase) ||
+                        product.category.lowercase(Locale.getDefault()).contains(queryLowerCase)
+            }
+        }
+
+        // Apply price filter
+        filteredList = filteredList.filter { product ->
+            val finalPrice = if (product.offerPercentage != null) {
+                product.price * (1 - product.offerPercentage)
+            } else {
+                product.price
+            }
+            finalPrice >= currentFilter.minPrice && finalPrice <= currentFilter.maxPrice
+        }
+
+        // Apply stock filter
+        if (currentFilter.inStockOnly) {
+            filteredList = filteredList.filter { it.stock > 0 }
+        }
+
+        // Apply sale filter
+        if (currentFilter.onSaleOnly) {
+            filteredList = filteredList.filter { it.offerPercentage != null && it.offerPercentage > 0 }
+        }
+
+        // Apply sorting
+        filteredList = when (currentFilter.sortBy) {
+            SortOption.PRICE_LOW_TO_HIGH -> filteredList.sortedBy {
+                if (it.offerPercentage != null) it.price * (1 - it.offerPercentage) else it.price
+            }
+            SortOption.PRICE_HIGH_TO_LOW -> filteredList.sortedByDescending {
+                if (it.offerPercentage != null) it.price * (1 - it.offerPercentage) else it.price
+            }
+            SortOption.RATING_HIGH_TO_LOW -> filteredList.sortedByDescending { it.averageRating }
+            SortOption.NAME_A_TO_Z -> filteredList.sortedBy { it.name.lowercase() }
+            SortOption.NAME_Z_TO_A -> filteredList.sortedByDescending { it.name.lowercase() }
+            SortOption.NEWEST, SortOption.NONE -> filteredList
+        }
+
+        viewModelScope.launch {
+            _searchResults.emit(Resource.Success(filteredList))
+        }
     }
 
 }

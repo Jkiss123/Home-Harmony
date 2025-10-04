@@ -43,6 +43,7 @@
     <dimen name="button_height_sm">40dp</dimen>
     <dimen name="button_height_md">48dp</dimen>
     <dimen name="button_height_lg">56dp</dimen>
+    <dimen name="mediumButtonHeight">48dp</dimen>
 
     <!-- Icon Sizes -->
     <dimen name="icon_xs">16dp</dimen>

@@ -60,17 +60,24 @@
             android:textSize="15sp"
             android:layout_marginTop="10dp"/>
 
-        <TextView
-            android:id="@+id/tvPaymentExplanation"
+        <FrameLayout
+            android:id="@+id/rvPaymentFrame"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Chúng tôi hiện tại chỉ hỗ trợ thanh toán khi nhận hàng"
-            android:fontFamily="@font/sf_pro_display"
-            app:layout_constraintTop_toBottomOf="@id/tvPaymentMethods"
             app:layout_constraintStart_toStartOf="@id/guideline1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPaymentMethods"
+            android:layout_marginTop="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPaymentMethods"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/payment_method_item"/>
+
+        </FrameLayout>
 
         <View
             android:id="@+id/topLine"
@@ -78,7 +85,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/white_background"
-            app:layout_constraintTop_toBottomOf="@id/tvPaymentExplanation"
+            app:layout_constraintTop_toBottomOf="@id/rvPaymentFrame"
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintEnd_toEndOf="@id/guideline2"
             android:backgroundTint="@color/g_blue_gray200"

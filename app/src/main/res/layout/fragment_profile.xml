@@ -119,6 +119,44 @@
                 android:background="@drawable/search_box_background">
 
                 <LinearLayout
+                    android:id="@+id/linearWishlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="10dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_heart"
+                        app:tint="@color/black"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Danh sách yêu thích"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/poppins_light"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:layout_gravity="center_vertical"/>
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/ic_arrow_right"
+                        app:tint="@color/g_blue_gray200"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/g_line"/>
+
+                <LinearLayout
                     android:id="@+id/linearAllOrders"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

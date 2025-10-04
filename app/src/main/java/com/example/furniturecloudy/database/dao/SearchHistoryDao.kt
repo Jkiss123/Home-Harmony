@@ -13,6 +13,9 @@ interface SearchHistoryDao {
     @Query("SELECT DISTINCT query FROM search_history ORDER BY timestamp DESC LIMIT 10")
     fun getRecentSearches(): Flow<List<String>>
 
+    @Query("SELECT * FROM search_history ORDER BY timestamp DESC LIMIT :limit")
+    fun getRecentSearchesWithLimit(limit: Int): Flow<List<SearchHistory>>
+
     @Query("SELECT DISTINCT query FROM search_history WHERE query LIKE :prefix || '%' ORDER BY timestamp DESC LIMIT 5")
     suspend fun getSuggestions(prefix: String): List<String>
 

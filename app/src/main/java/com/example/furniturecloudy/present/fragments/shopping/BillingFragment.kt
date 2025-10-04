@@ -24,6 +24,7 @@ import com.example.furniturecloudy.databinding.FragmentAddressBinding
 import com.example.furniturecloudy.databinding.FragmentBillingBinding
 import com.example.furniturecloudy.model.adapter.AddressAdapter
 import com.example.furniturecloudy.model.adapter.BillingProductAdapter
+import com.example.furniturecloudy.model.adapter.PaymentMethodAdapter
 import com.example.furniturecloudy.model.viewmodel.AddressViewmodel
 import com.example.furniturecloudy.model.viewmodel.BillingViewmodel
 import com.example.furniturecloudy.model.viewmodel.OrderViewmodel
@@ -40,11 +41,13 @@ class BillingFragment : Fragment() {
     private lateinit var binding:FragmentBillingBinding
     private val addresAdapter  by lazy { AddressAdapter() }
     private val billingAdapter by lazy { BillingProductAdapter() }
+    private val paymentAdapter by lazy { PaymentMethodAdapter() }
     private val viewmodel  by viewModels<BillingViewmodel>()
     private val args by navArgs<BillingFragmentArgs>()
     private var listcarts = emptyList<CartProducts>()
     private var totalPrice : Float = 0f
     private var selectedAddress : Address? = null
+    private var selectedPaymentMethod : String = "COD"
     private val orderViewModel  by viewModels<OrderViewmodel>()
     private val addressViewmodel by viewModels<AddressViewmodel>()
 
@@ -67,6 +70,7 @@ class BillingFragment : Fragment() {
 
         setupBillingAdapter()
         setupAddressAdapter()
+        setupPaymentAdapter()
         observeDeleteAddress()
         //
         viewLifecycleOwner.lifecycleScope.launch {
@@ -113,7 +117,7 @@ class BillingFragment : Fragment() {
                 Toast.makeText(requireContext(),"Vui lòng chọn địa chỉ giao hàng",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            showOrderConfirmDialog()
+            showOrderConfirmDialog(selectedPaymentMethod)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -138,15 +142,31 @@ class BillingFragment : Fragment() {
 
     }
 
-    private fun showOrderConfirmDialog() {
+    private fun showOrderConfirmDialog(paymentMethod: String) {
+        val paymentMethodDisplay = when(paymentMethod) {
+            "COD" -> "Tiền mặt khi nhận hàng"
+            "MoMo" -> "MoMo"
+            "VNPay" -> "VNPay"
+            "ZaloPay" -> "ZaloPay"
+            else -> "Tiền mặt khi nhận hàng"
+        }
+
         val alertDialog = AlertDialog.Builder(requireContext()).apply {
-            setTitle("Đạt Hàng")
-                .setMessage("Bạn confirm muốn đặt hàng chứ")
+            setTitle("Đặt Hàng")
+                .setMessage("Xác nhận đặt hàng với phương thức thanh toán: $paymentMethodDisplay?")
                 .setNegativeButton("Không"){dialog,_ ->
                     dialog.dismiss()
                 }
                 .setPositiveButton("Có"){dialog,_ ->
-                    val order = Order(OrderStatus.Ordered.status,totalPrice,listcarts,selectedAddress!!)
+                    val paymentStatus = if (paymentMethod == "COD") "PENDING" else "PENDING"
+                    val order = Order(
+                        orderStatus = OrderStatus.Ordered.status,
+                        totalPrice = totalPrice,
+                        products = listcarts,
+                        address = selectedAddress!!,
+                        paymentMethod = paymentMethod,
+                        paymentStatus = paymentStatus
+                    )
                     orderViewModel.placeOrder(order)
                     dialog.dismiss()
                 }
@@ -201,6 +221,18 @@ class BillingFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun setupPaymentAdapter() {
+        binding.rvPaymentMethods.apply {
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+            adapter = paymentAdapter
+            addItemDecoration(HorizontalcalItemDecoration())
+        }
+
+        paymentAdapter.onPaymentMethodSelected = { method ->
+            selectedPaymentMethod = method
         }
     }
 }
