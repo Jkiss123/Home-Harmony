@@ -122,6 +122,10 @@ class CartFragment : Fragment() {
             findNavController().navigate(aciton)
         }
 
+        binding.imageCloseCart.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
     }
 
 

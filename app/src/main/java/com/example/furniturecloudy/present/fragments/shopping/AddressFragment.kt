@@ -74,6 +74,10 @@ class AddressFragment : Fragment() {
                 val address = Address(name,phone,wards,district,city,addressfull)
                 viewmodel.addAddress(address)
             }
+
+            imageAddressClose.setOnClickListener {
+                findNavController().navigateUp()
+            }
         }
     }
 
