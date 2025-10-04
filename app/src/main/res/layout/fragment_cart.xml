@@ -15,39 +15,42 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarCart"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="@dimen/touch_target_md"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:elevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/spacing_md"
+                android:paddingEnd="@dimen/spacing_md">
 
                 <ImageView
                     android:id="@+id/imageCloseCart"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/icon_md"
+                    android:layout_height="@dimen/icon_md"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_close"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/black" />
-
+                    app:tint="@color/text_primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
+                    android:layout_marginStart="@dimen/spacing_md"
                     android:fontFamily="@font/poppins_light"
                     android:text="Giỏ Hàng"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_h2"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/imageCloseCart"
-                    app:layout_constraintStart_toStartOf="@id/imageCloseCart"
+                    app:layout_constraintStart_toEndOf="@id/imageCloseCart"
                     app:layout_constraintTop_toTopOf="@id/imageCloseCart" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -103,54 +106,48 @@
             android:id="@+id/totalBoxContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="@dimen/spacing_lg"
             android:background="@drawable/total_box_background"
+            android:padding="@dimen/spacing_md"
             app:layout_constraintEnd_toEndOf="@id/rightGuideLine"
             app:layout_constraintStart_toStartOf="@id/leftGuideLine"
             app:layout_constraintTop_toBottomOf="@id/bottomGuideLine">
 
-
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/sf_pro_display"
+                android:fontFamily="@font/poppins_light"
                 android:text="Tổng tiền"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body_large"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
             <TextView
                 android:id="@+id/tvTotalPrice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="15dp"
                 android:fontFamily="@font/sf_pro_display"
                 android:text="$150"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textAlignment="textEnd"
+                android:textColor="@color/primary_blue"
+                android:textSize="@dimen/text_h2"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/buttonCheckout"
             style="@style/blueButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="@dimen/smallButtonHeight"
-            android:layout_marginTop="45dp"
-            android:layout_marginBottom="20dp"
+            android:layout_height="@dimen/button_height_lg"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:layout_marginBottom="@dimen/spacing_lg"
             android:text="Thanh Toán"
             app:layout_constraintEnd_toEndOf="@id/rightGuideLine"
             app:layout_constraintStart_toStartOf="@id/leftGuideLine"

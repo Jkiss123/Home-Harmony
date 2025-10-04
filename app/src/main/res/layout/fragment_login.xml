@@ -46,19 +46,18 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutLogin1"
-        style="@style/editText"
+        style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:hint="Tên đăng nhập"
         app:layout_constraintEnd_toEndOf="@id/guidelineLoginRight"
-        app:layout_constraintHorizontal_bias="0.536"
         app:layout_constraintStart_toStartOf="@id/guidelineLoginLeft"
         app:layout_constraintTop_toBottomOf="@+id/txtvSlogan2Login">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtLoginTaiKhoan"
-            style="@style/editText"
+            style="@style/TextInputEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress" />
@@ -66,20 +65,19 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2login"
-        style="@style/editText"
+        style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:hint="Mật khẩu"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@id/guidelineLoginRight"
-        app:layout_constraintHorizontal_bias="0.536"
         app:layout_constraintStart_toStartOf="@id/guidelineLoginLeft"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutLogin1"
-        app:passwordToggleEnabled="true">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutLogin1">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtLoginMatKhau"
-            style="@style/editText"
+            style="@style/TextInputEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
@@ -104,7 +102,6 @@
         android:layout_marginTop="12dp"
         android:text="Đăng Nhập"
         app:layout_constraintEnd_toStartOf="@+id/guidelineLoginRight"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guidelineLoginLeft"
         app:layout_constraintTop_toBottomOf="@+id/txtQuenMatKhau_Login"
         app:spinning_bar_color="@color/white" />

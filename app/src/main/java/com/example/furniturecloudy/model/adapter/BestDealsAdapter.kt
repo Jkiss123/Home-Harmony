@@ -18,11 +18,12 @@ class BestDealsAdapter() : RecyclerView.Adapter<BestDealsAdapter.BestDealsViewHo
         fun bind(product: Product){
             binding.apply {
                 Glide.with(itemView).load(product.images[0]).into(imgBestDeal)
-                tvBestdealName.setText(product.name.toString())
+                tvBestdealName.setText(product.name)
                 if (product.offerPercentage == null) {
-                    tvNewPrice.visibility = View.GONE
+                    tvNewPrice.text = "$ ${String.format("%.2f", product.price)}"
+                    tvOldPrice.visibility = View.GONE
                 } else {
-                    product.offerPercentage?.let {
+                    product.offerPercentage.let {
                         val remainPercentage = 1f - it
                         val priceAfterOffer = remainPercentage * product.price
                         binding.tvNewPrice.text = "$ ${String.format("%.2f", priceAfterOffer)}"

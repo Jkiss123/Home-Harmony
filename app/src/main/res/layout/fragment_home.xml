@@ -5,17 +5,17 @@
     android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/g_card_background"
+    android:background="@color/background_secondary"
     tools:context=".present.fragments.shopping.HomeFragment">
 
     <LinearLayout
-        android:background="@color/g_card_background"
+        android:background="@color/background_secondary"
         android:id="@+id/homeHeader"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="@dimen/spacing_md"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:layout_marginEnd="@dimen/spacing_md"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,78 +23,84 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/search_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/touch_target_min"
             android:layout_weight="1"
+            android:elevation="@dimen/elevation_sm"
             android:background="@drawable/search_box_background">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_thin"
-                android:paddingStart="20dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:fontFamily="@font/poppins_light"
+                android:paddingStart="@dimen/spacing_md"
+                android:paddingEnd="@dimen/spacing_md"
                 android:singleLine="true"
                 android:text="Tìm kiếm"
-                android:textColor="#919394"
-                android:textSize="15sp"
+                android:textColor="@color/text_tertiary"
+                android:textSize="@dimen/text_body"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/search_icon" />
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="20dp"
+                android:id="@+id/search_icon"
+                android:layout_width="@dimen/icon_md"
+                android:layout_height="@dimen/icon_md"
+                android:layout_marginEnd="@dimen/spacing_md"
                 android:src="@drawable/ic_search2"
+                app:tint="@color/text_tertiary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
-            android:layout_width="10dp"
+            android:layout_width="@dimen/spacing_sm"
             android:layout_height="match_parent"/>
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/touch_target_min"
+            android:layout_height="@dimen/touch_target_min"
             android:background="@drawable/icon_background"
-            android:backgroundTint="@color/g_search_and_icons"
-            android:padding="5dp"
-            android:src="@drawable/ic_scan" />
+            android:padding="@dimen/spacing_sm"
+            android:src="@drawable/ic_scan"
+            app:tint="@color/text_secondary" />
 
         <View
-            android:layout_width="10dp"
+            android:layout_width="@dimen/spacing_sm"
             android:layout_height="match_parent"/>
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/touch_target_min"
+            android:layout_height="@dimen/touch_target_min"
             android:background="@drawable/icon_background"
-            android:backgroundTint="@color/g_search_and_icons"
-            android:padding="5dp"
-            android:src="@drawable/ic_microphone" />
+            android:padding="@dimen/spacing_sm"
+            android:src="@drawable/ic_microphone"
+            app:tint="@color/text_secondary" />
 
     </LinearLayout>
     
     <com.google.android.material.tabs.TabLayout
-        android:background="@color/g_card_background"
+        android:background="@color/background_secondary"
         android:id="@+id/homeFragment_tablayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabRippleColor="@color/white"
-        app:tabSelectedTextColor="@color/black"
+        app:tabRippleColor="@color/primary_blue_light"
+        app:tabSelectedTextColor="@color/primary_blue"
+        app:tabTextColor="@color/text_secondary"
         app:tabTextAppearance="@style/tabLayout_text"
         app:layout_constraintTop_toBottomOf="@id/homeHeader"
         app:layout_constraintStart_toStartOf="parent"
         app:tabIndicator="@null"
         app:tabMode="scrollable"
+        app:tabPaddingStart="@dimen/spacing_md"
+        app:tabPaddingEnd="@dimen/spacing_md"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="@dimen/spacing_sm"/>
     <androidx.viewpager2.widget.ViewPager2
-        android:background="@color/g_card_background"
+        android:background="@color/background_secondary"
         android:id="@+id/viewpager_homeFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"

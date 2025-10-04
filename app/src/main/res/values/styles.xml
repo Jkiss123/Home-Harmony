@@ -1,79 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Typography Styles (Updated) -->
+    <style name="TextDisplay">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">@dimen/text_display</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextH1">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">@dimen/text_h1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextH2">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">@dimen/text_h2</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextH3">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">@dimen/text_h3</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextBodyLarge">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">@dimen/text_body_large</item>
+    </style>
+
+    <style name="TextBody">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">@dimen/text_body</item>
+    </style>
+
+    <style name="TextBodySecondary">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">@dimen/text_body</item>
+    </style>
+
+    <style name="TextCaption">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">@dimen/text_caption</item>
+    </style>
+
+    <!-- Legacy Styles (Updated for backward compatibility) -->
     <style name="h4">
-        <item name="android:fontFamily">@font/poppins_thin</item>
+        <item name="android:fontFamily">@font/poppins_light</item>
         <item name="android:textColor">@color/g_black</item>
-        <item name="android:textSize">@dimen/h4TextSize</item>
+        <item name="android:textSize">@dimen/text_h1</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="h2">
         <item name="android:fontFamily">@font/poppins_light</item>
         <item name="android:textColor">@color/g_gray700</item>
-        <item name="android:textSize">@dimen/h2TextSize</item>
+        <item name="android:textSize">@dimen/text_body</item>
     </style>
 
     <style name="h3">
         <item name="android:fontFamily">@font/poppins_light</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/h3TextSize</item>
+        <item name="android:textSize">@dimen/text_body_large</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- Button Styles (Enhanced) -->
     <style name="blueButtonStyle">
         <item name="android:background">@drawable/blue_background</item>
-        <item name="android:fontFamily">@font/poppins_thin</item>
+        <item name="android:fontFamily">@font/poppins_light</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/h2TextSize</item>
+        <item name="android:textSize">@dimen/text_body_large</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:elevation">@dimen/elevation_md</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 
     <style name="whiteButtonStyle">
         <item name="android:background">@drawable/white_background</item>
-        <item name="android:fontFamily">@font/poppins_thin</item>
+        <item name="android:fontFamily">@font/poppins_light</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/h2TextSize</item>
+        <item name="android:textSize">@dimen/text_body_large</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:elevation">@dimen/elevation_sm</item>
     </style>
 
     <style name="editText">
         <item name="android:background">@drawable/white_background</item>
         <item name="android:gravity">center</item>
         <item name="singleLine">true</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textStyle">normal</item>
         <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textSize">@dimen/text_body_large</item>
+        <item name="android:textColor">@color/text_primary</item>
     </style>
 
+    <!-- TextInputLayout Style -->
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/g_blue</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="hintTextColor">@color/g_gray700</item>
+        <item name="android:textColorHint">@color/g_gray700</item>
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="endIconTint">@color/g_gray700</item>
+    </style>
 
-    <dimen name="h4TextSize">35sp</dimen>
-    <dimen name="h2TextSize">17sp</dimen>
-    <dimen name="h3TextSize">22sp</dimen>
+    <!-- TextInputEditText Style -->
+    <style name="TextInputEditTextStyle">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <!-- Legacy Text Sizes -->
+    <dimen name="h4TextSize">24sp</dimen>
+    <dimen name="h2TextSize">14sp</dimen>
+    <dimen name="h3TextSize">16sp</dimen>
 
     <style name="tabLayout_text" parent="TextAppearance.AppCompat">
-        <item name="color">@color/black</item>
+        <item name="color">@color/text_primary</item>
         <item name="fontFamily">@font/sf_pro_display</item>
         <item name="textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_body</item>
     </style>
 
     <style name="MediumTextViewThin">
-        <item name="android:textColor">#4b4f60</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">@dimen/text_body</item>
         <item name="fontFamily">@font/sf_pro_display</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="BigTextViewThin">
-        <item name="android:textColor">#4b4f60</item>
-        <item name="android:textSize">20sp</item>
-        <item name="fontFamily">@font/poppins_thin</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">@dimen/text_h2</item>
+        <item name="fontFamily">@font/poppins_light</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-
     <style name="SmallTextViewThin">
-    <item name="android:textColor">@color/g_gray700</item>
-    <item name="android:textSize">10sp</item>
-    <item name="fontFamily">@font/sf_pro_display</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">@dimen/text_caption</item>
+        <item name="fontFamily">@font/sf_pro_display</item>
     </style>
 
 </resources>

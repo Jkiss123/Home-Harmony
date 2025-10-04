@@ -1,56 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="140dp"
     android:layout_height="wrap_content"
-    android:background="@color/g_card_background"
-    app:elevation="0dp"
-
-    >
+    android:layout_margin="@dimen/spacing_xs"
+    android:background="@color/white"
+    app:cardCornerRadius="@dimen/radius_md"
+    app:cardElevation="@dimen/elevation_md"
+    android:foreground="?attr/selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="@dimen/spacing_sm">
 
         <ImageView
             android:id="@+id/img_product"
-            android:layout_width="114dp"
-            android:layout_height="108dp"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="fitCenter"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/linear_product_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/spacing_sm"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="@id/img_product"
-            app:layout_constraintTop_toBottomOf="@id/img_product"
-            app:layout_constraintEnd_toEndOf="@id/img_product">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_product">
 
             <TextView
                 android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
                 android:fontFamily="@font/poppins_light"
+                android:maxLines="1"
                 android:text="Chair"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_weight="1"/>
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/img_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="16dp"
+                android:layout_width="@dimen/icon_sm"
+                android:layout_height="@dimen/icon_sm"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_favorite"
-                app:tint="@color/g_blue_gray200" />
+                app:tint="@color/neutral_400" />
         </LinearLayout>
 
 
@@ -59,57 +61,54 @@
             style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="@dimen/spacing_xs"
             android:isIndicator="true"
             android:numStars="5"
             android:rating="0"
             android:stepSize="0.1"
-            app:layout_constraintStart_toStartOf="@id/img_product"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/linear_product_name" />
 
         <TextView
             android:id="@+id/tvProductRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="@dimen/spacing_xs"
             android:fontFamily="@font/sf_pro_display"
             android:text="0.0"
-            android:textColor="@color/g_gray700"
-            android:textSize="10sp"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_caption"
             app:layout_constraintBottom_toBottomOf="@id/ratingBarProduct"
             app:layout_constraintStart_toEndOf="@id/ratingBarProduct"
             app:layout_constraintTop_toTopOf="@id/ratingBarProduct" />
 
         <TextView
-            android:id="@+id/tv_new_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="15dp"
-            android:fontFamily="@font/sf_pro_display"
-            android:text="$1600"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_price"
-            app:layout_constraintTop_toBottomOf="@id/ratingBarProduct"
-            android:layout_marginStart="10dp"/>
-
-        <TextView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:layout_marginBottom="@dimen/spacing_xs"
             android:fontFamily="@font/sf_pro_display"
             android:text="$1600"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textColor="@color/primary_blue"
+            android:textSize="@dimen/text_body_large"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/img_product"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ratingBarProduct" />
 
+        <TextView
+            android:id="@+id/tv_new_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_sm"
+            android:fontFamily="@font/sf_pro_display"
+            android:text="$1600"
+            android:textColor="@color/text_tertiary"
+            android:textSize="@dimen/text_body_small"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_price"
+            app:layout_constraintStart_toEndOf="@id/tv_price" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

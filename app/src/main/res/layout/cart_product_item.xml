@@ -1,113 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:backgroundTint="@color/white">
+    android:background="@color/white"
+    android:padding="@dimen/spacing_md">
 
-    <View
-        android:id="@+id/line"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <ImageView
-        android:id="@+id/imgCartProduct"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardImageContainer"
         android:layout_width="80dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="5dp"
-        android:scaleType="centerCrop"
-        android:src="@color/black"
-        app:layout_constraintBottom_toTopOf="@id/line"
+        android:layout_height="80dp"
+        app:cardCornerRadius="@dimen/radius_sm"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgCartProduct"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@color/neutral_200" />
+    </androidx.cardview.widget.CardView>
     <TextView
         android:id="@+id/tv_cart_productname"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Product Name"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="15sp"
-        android:maxLines="1"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:ellipsize="end"
         android:fontFamily="@font/poppins_light"
-        app:layout_constraintStart_toEndOf="@id/imgCartProduct"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:maxLines="2"
+        android:text="Product Name"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_body"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/btnplus_cart"
+        app:layout_constraintStart_toEndOf="@id/cardImageContainer"
+        app:layout_constraintTop_toTopOf="@id/cardImageContainer" />
 
     <TextView
         android:id="@+id/tv_cart_proudctprice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/tv_cart_productname"
-        app:layout_constraintTop_toBottomOf="@id/tv_cart_productname"
+        android:layout_marginTop="@dimen/spacing_xs"
+        android:fontFamily="@font/sf_pro_display"
         android:text="$600"
-        />
+        android:textColor="@color/primary_blue"
+        android:textSize="@dimen/text_body_large"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/tv_cart_productname"
+        app:layout_constraintTop_toBottomOf="@id/tv_cart_productname" />
     
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgv_cart_color"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginTop="5dp"
-        android:src="@color/g_blue"
+        android:layout_width="@dimen/icon_sm"
+        android:layout_height="@dimen/icon_sm"
+        android:layout_marginTop="@dimen/spacing_xs"
+        android:src="@color/primary_blue"
         app:layout_constraintStart_toStartOf="@id/tv_cart_productname"
-        app:layout_constraintTop_toBottomOf="@id/tv_cart_proudctprice"
-        />
+        app:layout_constraintTop_toBottomOf="@id/tv_cart_proudctprice" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgv_cart_size"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginTop="5dp"
-        android:src="@color/g_gray500"
-        android:layout_marginStart="10dp"
+        android:layout_width="@dimen/icon_sm"
+        android:layout_height="@dimen/icon_sm"
+        android:layout_marginStart="@dimen/spacing_sm"
+        android:src="@color/neutral_400"
         app:layout_constraintStart_toEndOf="@id/imgv_cart_color"
-        app:layout_constraintTop_toBottomOf="@id/tv_cart_proudctprice"
-        />
+        app:layout_constraintTop_toTopOf="@id/imgv_cart_color" />
 
     <TextView
         android:id="@+id/tv_cart_productSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_light"
         android:text="L"
         android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="@id/imgv_cart_size"
+        android:textSize="@dimen/text_caption"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/imgv_cart_size"
         app:layout_constraintEnd_toEndOf="@id/imgv_cart_size"
-        app:layout_constraintTop_toTopOf="@id/imgv_cart_size"
-        app:layout_constraintBottom_toBottomOf="@id/imgv_cart_size"/>
+        app:layout_constraintStart_toStartOf="@id/imgv_cart_size"
+        app:layout_constraintTop_toTopOf="@id/imgv_cart_size" />
 
-    
-    
     <ImageView
-        android:id="@+id/btnminus_cart"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/ic_minus"
+        android:id="@+id/btnplus_cart"
+        android:layout_width="@dimen/icon_lg"
+        android:layout_height="@dimen/icon_lg"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="@dimen/spacing_xs"
+        android:src="@drawable/ic_plus"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/primary_blue" />
+
     <TextView
         android:id="@+id/tv_cart_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_light"
+        android:minWidth="@dimen/icon_lg"
         android:text="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnplus_cart"
+        android:textAlignment="center"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_body"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/btnminus_cart"
-        android:layout_marginEnd="5dp"
-        />
-    <ImageView
-        android:id="@+id/btnplus_cart"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/ic_plus"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/btnplus_cart" />
+
+    <ImageView
+        android:id="@+id/btnminus_cart"
+        android:layout_width="@dimen/icon_lg"
+        android:layout_height="@dimen/icon_lg"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="@dimen/spacing_xs"
+        android:src="@drawable/ic_minus"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/primary_blue" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:background="@color/neutral_200"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardImageContainer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
