@@ -157,12 +157,12 @@ class ProductDetailFragment : Fragment() {
                     when(it){
                         is Resource.Error -> {
                             binding.btnAddToCartDetailProdcut.stopAnimation()
-                            Toast.makeText(requireContext(),it.message.toString(),Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Không thể thêm vào giỏ hàng. Vui lòng thử lại",Toast.LENGTH_SHORT).show()
                         }
                         is Resource.Loading -> binding.btnAddToCartDetailProdcut.startAnimation()
                         is Resource.Success -> {
                             binding.btnAddToCartDetailProdcut.revertAnimation()
-                            Toast.makeText(requireContext(),"Thêm Thành Công",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Đã thêm vào giỏ hàng",Toast.LENGTH_SHORT).show()
                         }
                         else -> Unit
                     }
@@ -264,7 +264,7 @@ class ProductDetailFragment : Fragment() {
                             addReviewDialog?.findViewById<com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton>(
                                 R.id.btnSubmitReview
                             )?.revertAnimation()
-                            Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Gửi đánh giá thất bại. Vui lòng thử lại", Toast.LENGTH_SHORT).show()
                         }
                         else -> Unit
                     }

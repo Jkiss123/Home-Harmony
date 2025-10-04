@@ -40,7 +40,7 @@ class AddressFragment : Fragment() {
                     when(it){
                         is Resource.Error -> {
                             binding.progressbarAddress.visibility = View.GONE
-                            Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Không thể thêm địa chỉ. Vui lòng thử lại",Toast.LENGTH_SHORT).show()
                         }
                         is Resource.Loading -> {
                             binding.progressbarAddress.visibility = View.VISIBLE

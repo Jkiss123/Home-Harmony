@@ -51,7 +51,7 @@ class CartFragment : Fragment() {
                     when(it){
                         is Resource.Error -> {
                             binding.progressbarCart.visibility = View.GONE
-                            Toast.makeText(requireContext(),it.message.toString(),Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Không thể tải giỏ hàng. Vui lòng thử lại",Toast.LENGTH_SHORT).show()
                         }
                         is Resource.Loading -> {binding.progressbarCart.visibility = View.VISIBLE}
                         is Resource.Success -> {

@@ -96,7 +96,7 @@ class LoginFragment : Fragment() {
                     when(it){
                         is Resource.Error -> {
                             binding.btnLoginDangnhap.revertAnimation()
-                            Toast.makeText(requireContext(),"Đăng Nhập không thành công",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Đăng nhập không thành công. Vui lòng kiểm tra email và mật khẩu",Toast.LENGTH_SHORT).show()
                         }
                         is Resource.Loading -> {
                             binding.btnLoginDangnhap.startAnimation()
@@ -131,7 +131,7 @@ class LoginFragment : Fragment() {
             }
         } catch (e: ApiException) {
             Log.w("LoginFragment", "Google sign in failed", e)
-            Toast.makeText(requireContext(), "Đăng nhập Google thất bại: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Đăng nhập Google thất bại. Vui lòng thử lại", Toast.LENGTH_SHORT).show()
         }
     }
 }

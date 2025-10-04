@@ -106,7 +106,7 @@ class SearchFragment : Fragment() {
                     when(it){
                         is Resource.Error -> {
                             binding.progressbarSearch.visibility = View.GONE
-                            Toast.makeText(requireContext(),it.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Không thể tải sản phẩm. Vui lòng thử lại", Toast.LENGTH_SHORT).show()
                         }
                         is Resource.Loading -> {
                             binding.progressbarSearch.visibility = View.VISIBLE
@@ -132,7 +132,7 @@ class SearchFragment : Fragment() {
                     when(it){
                         is Resource.Error -> {
                             binding.progressbarSearch.visibility = View.GONE
-                            Toast.makeText(requireContext(),it.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Tìm kiếm thất bại. Vui lòng thử lại", Toast.LENGTH_SHORT).show()
                         }
                         is Resource.Loading -> {
                             binding.progressbarSearch.visibility = View.VISIBLE

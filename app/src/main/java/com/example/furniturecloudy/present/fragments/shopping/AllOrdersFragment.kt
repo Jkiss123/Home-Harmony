@@ -53,7 +53,7 @@ class AllOrdersFragment : Fragment() {
                             }
                         }
                         is Resource.Error -> {
-                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Không thể tải danh sách đơn hàng. Vui lòng thử lại", Toast.LENGTH_SHORT).show()
                             binding.progressbarAllOrders.visibility = View.GONE
                         }
                         else -> Unit

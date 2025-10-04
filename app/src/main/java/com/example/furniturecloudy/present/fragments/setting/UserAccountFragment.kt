@@ -90,8 +90,8 @@ class UserAccountFragment : Fragment() {
                         is Resource.Loading -> {binding.buttonSave.startAnimation()}
                         is Resource.Success -> {
                             binding.buttonSave.revertAnimation()
+                            Toast.makeText(requireContext(),"Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show()
                             findNavController().navigateUp()
-                            Toast.makeText(requireContext(),"LUU xong roi", Toast.LENGTH_LONG).show()
                         }
                         else -> Unit
                     }

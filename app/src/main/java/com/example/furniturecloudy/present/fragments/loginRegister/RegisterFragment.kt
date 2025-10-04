@@ -65,7 +65,7 @@ class RegisterFragment : Fragment() {
                         is Resource.Error -> {
                             Log.e(TAG, it.message.toString())
                             binding.btnRegisterDangky.revertAnimation()
-                            Toast.makeText(context, "Đăng ký ko công", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Đăng ký không thành công. Vui lòng thử lại", Toast.LENGTH_SHORT).show()
                         }
                         is Resource.Loading -> {
                             binding.btnRegisterDangky.startAnimation()

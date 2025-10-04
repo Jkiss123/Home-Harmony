@@ -75,7 +75,7 @@ class BillingFragment : Fragment() {
                     when(it){
                         is Resource.Error -> {
                             binding.progressbarAddress.visibility = View.GONE
-                            Toast.makeText(requireContext(),it.message.toString(),Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Không thể tải danh sách địa chỉ. Vui lòng thử lại",Toast.LENGTH_SHORT).show()
                         }
                         is Resource.Loading -> {binding.progressbarAddress.visibility = View.VISIBLE}
                         is Resource.Success -> {
@@ -110,7 +110,7 @@ class BillingFragment : Fragment() {
 
         binding.buttonPlaceOrder.setOnClickListener {
             if (selectedAddress == null){
-                Toast.makeText(requireContext(),"Chọn địa chỉ giao hàng",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),"Vui lòng chọn địa chỉ giao hàng",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             showOrderConfirmDialog()
@@ -121,7 +121,7 @@ class BillingFragment : Fragment() {
                 orderViewModel.order.collectLatest {
                     when(it){
                         is Resource.Error -> {
-                            Toast.makeText(requireContext(),it.message.toString(),Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Đặt hàng thất bại. Vui lòng thử lại",Toast.LENGTH_SHORT).show()
                             binding.buttonPlaceOrder.stopAnimation()
                         }
                         is Resource.Loading -> {binding.buttonPlaceOrder.startAnimation()}
@@ -195,7 +195,7 @@ class BillingFragment : Fragment() {
                             // No need to manually refresh - addSnapshotListener auto-updates
                         }
                         is Resource.Error -> {
-                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Xóa địa chỉ thất bại. Vui lòng thử lại", Toast.LENGTH_SHORT).show()
                         }
                         else -> Unit
                     }

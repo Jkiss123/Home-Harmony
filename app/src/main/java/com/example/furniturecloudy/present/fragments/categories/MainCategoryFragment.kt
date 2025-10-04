@@ -96,7 +96,7 @@ class MainCategoryFragment : Fragment() {
                         is Resource.Error -> {
                             hideLoading()
                             Log.e(TAG,it.message.toString())
-                            Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Không thể tải sản phẩm đặc biệt. Vui lòng thử lại",Toast.LENGTH_SHORT).show()
                         }
                         is Resource.Loading -> showLoading()
                         is Resource.Success -> {
@@ -115,7 +115,7 @@ class MainCategoryFragment : Fragment() {
                         is Resource.Error -> {
                             hideLoading()
                             Log.e(TAG,it.message.toString())
-                            Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Không thể tải ưu đãi tốt nhất. Vui lòng thử lại",Toast.LENGTH_SHORT).show()
                         }
                         is Resource.Loading -> showLoading()
                         is Resource.Success -> {
@@ -134,7 +134,7 @@ class MainCategoryFragment : Fragment() {
                         is Resource.Error -> {
                             binding.progressbarMainCategory2.visibility = View.GONE
                             Log.e(TAG,it.message.toString())
-                            Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Không thể tải sản phẩm. Vui lòng thử lại",Toast.LENGTH_SHORT).show()
                         }
                         is Resource.Loading -> binding.progressbarMainCategory2.visibility = View.VISIBLE
                         is Resource.Success -> {

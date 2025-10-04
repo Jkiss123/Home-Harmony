@@ -62,7 +62,7 @@ class ForgotPasswordFragment : Fragment() {
                             binding.btnSendResetPassword.revertAnimation()
                             Toast.makeText(
                                 requireContext(),
-                                "Gửi email thất bại: ${it.message}",
+                                "Gửi email thất bại. Vui lòng kiểm tra địa chỉ email",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
