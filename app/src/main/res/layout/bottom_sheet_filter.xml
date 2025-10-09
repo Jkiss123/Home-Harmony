@@ -202,7 +202,8 @@
                 android:layout_height="@dimen/mediumButtonHeight"
                 android:layout_weight="1"
                 android:text="Áp dụng"
-                style="@style/blueButtonStyle"
+                android:textColor="@color/g_blue"
+                android:background="@drawable/white_background"
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
 
