@@ -9,28 +9,16 @@
     tools:context=".present.fragments.loginRegister.LoginFragment">
 
     <TextView
-        android:id="@+id/txvAppOwnerLogin"
-        style="@style/h3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="68dp"
-        android:text="@string/owner"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/guidelineLoginLeft"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/txvSlogantLogin"
         style="@style/h4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="68dp"
         android:gravity="center"
         android:text="Đăng Nhập"
         app:layout_constraintStart_toStartOf="@id/guidelineLoginLeft"
-        app:layout_constraintTop_toBottomOf="@+id/txvAppOwnerLogin" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtvSlogan2Login"
