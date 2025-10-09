@@ -2,6 +2,7 @@ package com.example.furniturecloudy.present.fragments.shopping
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,7 +72,7 @@ class BillingFragment : Fragment() {
         setupBillingAdapter()
         setupAddressAdapter()
         setupPaymentAdapter()
-        observeDeleteAddress()
+        // observeDeleteAddress() // Comment out để tránh conflict với AddressFragment
         //
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -81,10 +82,17 @@ class BillingFragment : Fragment() {
                             binding.progressbarAddress.visibility = View.GONE
                             Toast.makeText(requireContext(),"Không thể tải danh sách địa chỉ. Vui lòng thử lại",Toast.LENGTH_SHORT).show()
                         }
-                        is Resource.Loading -> {binding.progressbarAddress.visibility = View.VISIBLE}
+                        is Resource.Loading -> {
+                            binding.progressbarAddress.visibility = View.VISIBLE
+                        }
                         is Resource.Success -> {
                             binding.progressbarAddress.visibility = View.GONE
                             addresAdapter.differ.submitList(it.data)
+                            addresAdapter.resetSelection()
+                            // Reset selectedAddress if it's not in current list
+                            if (selectedAddress != null && it.data?.none { addr -> addr.id == selectedAddress?.id } == true) {
+                                selectedAddress = null
+                            }
                         }
                         else -> Unit
                     }
@@ -93,7 +101,10 @@ class BillingFragment : Fragment() {
         }
         //
         binding.imageAddAddress.setOnClickListener {
-            findNavController().navigate(R.id.action_billingFragment_to_addressFragment)
+            val bundle = Bundle().apply {
+                putParcelable("address", null)
+            }
+            findNavController().navigate(R.id.action_billingFragment_to_addressFragment, bundle)
         }
         binding.tvTotalPrice.text = "$ ${totalPrice.formatPrice()}}"
         binding.imageCloseBilling.setOnClickListener {
@@ -104,8 +115,10 @@ class BillingFragment : Fragment() {
         }
 
         addresAdapter.onEditClick = { address ->
-            val action = BillingFragmentDirections.actionBillingFragmentToAddressFragment()
-            findNavController().navigate(action)
+            val bundle = Bundle().apply {
+                putParcelable("address", address)
+            }
+            findNavController().navigate(R.id.action_billingFragment_to_addressFragment, bundle)
         }
 
         addresAdapter.onDeleteClick = { address ->
@@ -141,6 +154,7 @@ class BillingFragment : Fragment() {
         }
 
     }
+
 
     private fun showOrderConfirmDialog(paymentMethod: String) {
         val paymentMethodDisplay = when(paymentMethod) {

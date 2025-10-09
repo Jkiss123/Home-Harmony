@@ -25,8 +25,8 @@ class AddressViewmodel @Inject constructor(
     private val _updateAddress = MutableStateFlow<Resource<Address>>(Resource.UnSpecified())
     val updateAddress = _updateAddress.asStateFlow()
 
-    private val _deleteAddress = MutableStateFlow<Resource<String>>(Resource.UnSpecified())
-    val deleteAddress = _deleteAddress.asStateFlow()
+    private val _deleteAddress = MutableSharedFlow<Resource<String>>()
+    val deleteAddress = _deleteAddress.asSharedFlow()
 
     private val _error = MutableSharedFlow<String>()
     val error = _error.asSharedFlow()
@@ -82,19 +82,19 @@ class AddressViewmodel @Inject constructor(
 
     fun deleteAddress(addressId: String) {
         viewModelScope.launch {
-            _deleteAddress.emit(Resource.Loading())
+            _deleteAddress.tryEmit(Resource.Loading())
         }
         firestore.collection("user").document(firebaseAuth.uid!!)
             .collection("address").document(addressId)
             .delete()
             .addOnSuccessListener {
                 viewModelScope.launch {
-                    _deleteAddress.emit(Resource.Success(addressId))
+                    _deleteAddress.tryEmit(Resource.Success(addressId))
                 }
             }
             .addOnFailureListener {
                 viewModelScope.launch {
-                    _deleteAddress.emit(Resource.Error(it.message.toString()))
+                    _deleteAddress.tryEmit(Resource.Error(it.message.toString()))
                 }
             }
     }

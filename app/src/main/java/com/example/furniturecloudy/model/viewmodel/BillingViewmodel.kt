@@ -35,9 +35,9 @@ class BillingViewmodel @Inject constructor(
                     viewModelScope.launch { _address.emit(Resource.Error(error.message.toString())) }
                     return@addSnapshotListener
                 }
-                val addresses = value?.toObjects(Address::class.java)
+                val addresses = value?.toObjects(Address::class.java) ?: emptyList()
                 viewModelScope.launch {
-                    _address.emit(Resource.Success(addresses!!))
+                    _address.emit(Resource.Success(addresses))
                 }
             }
     }
