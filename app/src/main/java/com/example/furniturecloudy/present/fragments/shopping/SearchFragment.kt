@@ -66,8 +66,8 @@ class SearchFragment : Fragment() {
         }
 
         binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener{ v, _, scrollY, _, _ ->
-            // Only allow pagination when not actively searching
-            if (!isSearching && v.getChildAt(0).bottom <= v.height + scrollY) {
+            // Only allow pagination when not actively searching or filtering
+            if (!isSearching && !viewmodel.isFiltering() && v.getChildAt(0).bottom <= v.height + scrollY) {
                 viewmodel.getProducts()
             }
         })

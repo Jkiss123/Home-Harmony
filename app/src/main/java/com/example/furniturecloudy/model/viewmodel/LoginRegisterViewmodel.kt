@@ -1,5 +1,6 @@
 package com.example.furniturecloudy.model.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.furniturecloudy.data.User
 import com.example.furniturecloudy.util.Constants.USER_COLLECTION

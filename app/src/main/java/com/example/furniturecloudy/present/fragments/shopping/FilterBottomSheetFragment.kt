@@ -50,15 +50,16 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment() {
         binding.cbInStockOnly.isChecked = currentFilter.inStockOnly
         binding.cbOnSaleOnly.isChecked = currentFilter.onSaleOnly
 
-        // Set sort option
-        when (currentFilter.sortBy) {
-            SortOption.NONE -> binding.chipSortDefault.isChecked = true
-            SortOption.PRICE_LOW_TO_HIGH -> binding.chipSortPriceLow.isChecked = true
-            SortOption.PRICE_HIGH_TO_LOW -> binding.chipSortPriceHigh.isChecked = true
-            SortOption.RATING_HIGH_TO_LOW -> binding.chipSortRating.isChecked = true
-            SortOption.NAME_A_TO_Z -> binding.chipSortName.isChecked = true
-            else -> binding.chipSortDefault.isChecked = true
+        // Set sort option using ChipGroup check method for single selection
+        val chipIdToCheck = when (currentFilter.sortBy) {
+            SortOption.NONE -> R.id.chipSortDefault
+            SortOption.PRICE_LOW_TO_HIGH -> R.id.chipSortPriceLow
+            SortOption.PRICE_HIGH_TO_LOW -> R.id.chipSortPriceHigh
+            SortOption.RATING_HIGH_TO_LOW -> R.id.chipSortRating
+            SortOption.NAME_A_TO_Z -> R.id.chipSortName
+            else -> R.id.chipSortDefault
         }
+        binding.chipGroupSort.check(chipIdToCheck)
     }
 
     private fun setupClickListeners() {
@@ -80,18 +81,19 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment() {
         binding.etMaxPrice.text?.clear()
         binding.cbInStockOnly.isChecked = false
         binding.cbOnSaleOnly.isChecked = false
-        binding.chipSortDefault.isChecked = true
+        binding.chipGroupSort.check(R.id.chipSortDefault)
     }
 
     private fun applyFilter() {
         val minPrice = binding.etMinPrice.text.toString().toFloatOrNull() ?: 0f
         val maxPrice = binding.etMaxPrice.text.toString().toFloatOrNull() ?: Float.MAX_VALUE
 
-        val sortBy = when {
-            binding.chipSortPriceLow.isChecked -> SortOption.PRICE_LOW_TO_HIGH
-            binding.chipSortPriceHigh.isChecked -> SortOption.PRICE_HIGH_TO_LOW
-            binding.chipSortRating.isChecked -> SortOption.RATING_HIGH_TO_LOW
-            binding.chipSortName.isChecked -> SortOption.NAME_A_TO_Z
+        val sortBy = when (binding.chipGroupSort.checkedChipId) {
+            R.id.chipSortPriceLow -> SortOption.PRICE_LOW_TO_HIGH
+            R.id.chipSortPriceHigh -> SortOption.PRICE_HIGH_TO_LOW
+            R.id.chipSortRating -> SortOption.RATING_HIGH_TO_LOW
+            R.id.chipSortName -> SortOption.NAME_A_TO_Z
+            R.id.chipSortDefault -> SortOption.NONE
             else -> SortOption.NONE
         }
 

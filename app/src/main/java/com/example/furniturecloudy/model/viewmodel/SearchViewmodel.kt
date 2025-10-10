@@ -71,9 +71,9 @@ class SearchViewmodel @Inject constructor(private val firestore: FirebaseFiresto
                     viewModelScope.launch {
                         _products.emit(Resource.Success(allProducts.toList()))
 
-                        // If there's an active search, filter the results
-                        if (currentSearchQuery.isNotEmpty()) {
-                            filterProducts(currentSearchQuery)
+                        // If there's an active search or filter, reapply them
+                        if (currentSearchQuery.isNotEmpty() || currentFilter.isActive()) {
+                            filterAndSortProducts()
                         }
                     }
 
@@ -130,6 +130,10 @@ class SearchViewmodel @Inject constructor(private val firestore: FirebaseFiresto
     }
 
     fun getCurrentFilter(): ProductFilter = currentFilter
+
+    fun isFiltering(): Boolean {
+        return currentSearchQuery.isNotEmpty() || currentFilter.isActive()
+    }
 
     private fun filterAndSortProducts() {
         viewModelScope.launch {
