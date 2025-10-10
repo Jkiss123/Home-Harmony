@@ -74,6 +74,7 @@ class RegisterFragment : Fragment() {
                             Log.d("Success", it.data.toString())
                             binding.btnRegisterDangky.revertAnimation()
                             Toast.makeText(context, "Đăng ký thành công", Toast.LENGTH_SHORT).show()
+                            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                         }
                         else -> Unit
                     }
