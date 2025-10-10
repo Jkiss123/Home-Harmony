@@ -13,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="66dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
@@ -21,7 +21,7 @@
         app:strokeColor="@color/g_blue"
         app:strokeWidth="1dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/fabFilter"
+        app:layout_constraintEnd_toStartOf="@+id/btnVoiceSearch"
         app:layout_constraintStart_toStartOf="parent">
 
     <androidx.appcompat.widget.SearchView
@@ -35,6 +35,20 @@
         />
 
     </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnVoiceSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_microphone"
+        android:contentDescription="Tìm kiếm bằng giọng nói"
+        app:tint="@color/white"
+        app:fabSize="mini"
+        app:backgroundTint="@color/accent_orange"
+        app:layout_constraintTop_toTopOf="@id/materialCardView"
+        app:layout_constraintBottom_toBottomOf="@id/materialCardView"
+        app:layout_constraintEnd_toStartOf="@+id/fabFilter" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabFilter"

@@ -1,5 +1,6 @@
 package com.example.furniturecloudy.present.fragments.shopping
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ import com.example.furniturecloudy.model.adapter.BestDealsAdapter
 import com.example.furniturecloudy.model.adapter.SearchHistoryAdapter
 import com.example.furniturecloudy.model.viewmodel.SearchViewmodel
 import com.example.furniturecloudy.util.Resource
+import com.example.furniturecloudy.util.VoiceSearchManager
 import com.example.furniturecloudy.util.showBottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -41,6 +43,9 @@ class SearchFragment : Fragment() {
     @Inject
     lateinit var searchHistoryRepository: SearchHistoryRepository
 
+    private lateinit var voiceSearchManager: VoiceSearchManager
+    private val VOICE_SEARCH_REQUEST_CODE = 1001
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,6 +60,7 @@ class SearchFragment : Fragment() {
         setupRv()
         setupSearchHistoryRv()
         setupSearchView()
+        setupVoiceSearch()
         setupFilterButton()
         observeProducts()
         observeSearchResults()
@@ -103,6 +109,32 @@ class SearchFragment : Fragment() {
                 return true
             }
         })
+    }
+
+    private fun setupVoiceSearch() {
+        voiceSearchManager = VoiceSearchManager(this)
+        binding.btnVoiceSearch.setOnClickListener {
+            // Add visual feedback
+            it.animate()
+                .scaleX(0.9f)
+                .scaleY(0.9f)
+                .setDuration(100)
+                .withEndAction {
+                    it.animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setDuration(100)
+                        .start()
+                }
+                .start()
+
+            voiceSearchManager.startVoiceRecognition(VOICE_SEARCH_REQUEST_CODE)
+            Toast.makeText(
+                requireContext(),
+                "Đang nghe... Hãy nói tên sản phẩm",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun observeProducts() {
@@ -238,5 +270,23 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         showBottomNavigationView()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == VOICE_SEARCH_REQUEST_CODE) {
+            val recognizedText = voiceSearchManager.handleVoiceResult(resultCode, data)
+            if (recognizedText != null && recognizedText.isNotEmpty()) {
+                binding.searchView.setQuery(recognizedText, true)
+                Toast.makeText(requireContext(), "Đã tìm kiếm: $recognizedText", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Không nhận diện được giọng nói. Vui lòng thử lại",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }
