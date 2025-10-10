@@ -39,6 +39,7 @@ class SearchFragment : Fragment() {
     private val searchHistoryAdapter by lazy { SearchHistoryAdapter() }
     private val viewmodel : SearchViewmodel by viewModels()
     private var isSearching = false
+    private var isFromRecentSearch = false
 
     @Inject
     lateinit var searchHistoryRepository: SearchHistoryRepository
@@ -86,10 +87,14 @@ class SearchFragment : Fragment() {
                     if (it.isNotEmpty()) {
                         isSearching = true
                         viewmodel.searchProducts(it)
-                        // Save to search history
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            searchHistoryRepository.addSearch(it)
+                        // Save to search history if not from recent search
+                        if (!isFromRecentSearch) {
+                            viewLifecycleOwner.lifecycleScope.launch {
+                                searchHistoryRepository.addSearch(it)
+                            }
                         }
+                        // Reset flag after submit
+                        isFromRecentSearch = false
                     }
                 }
                 return true
@@ -214,7 +219,11 @@ class SearchFragment : Fragment() {
         }
 
         searchHistoryAdapter.onSearchClick = { query ->
-            binding.searchView.setQuery(query, true)
+            isFromRecentSearch = true
+            binding.searchView.setQuery(
+                query,
+                true
+            ) // true = submit, will trigger onQueryTextSubmit
         }
 
         searchHistoryAdapter.onDeleteClick = { searchHistory ->
@@ -277,6 +286,7 @@ class SearchFragment : Fragment() {
         if (requestCode == VOICE_SEARCH_REQUEST_CODE) {
             val recognizedText = voiceSearchManager.handleVoiceResult(resultCode, data)
             if (recognizedText != null && recognizedText.isNotEmpty()) {
+                isFromRecentSearch = false // Voice search should save to history
                 binding.searchView.setQuery(recognizedText, true)
                 Toast.makeText(requireContext(), "Đã tìm kiếm: $recognizedText", Toast.LENGTH_SHORT)
                     .show()
