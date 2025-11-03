@@ -12,8 +12,10 @@ dependencyResolutionManagement {
         mavenCentral()
         jcenter()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
 rootProject.name = "FurnitureCloudy"
 include(":app")
+include(":momo_partner_sdk")
