@@ -1,8 +1,10 @@
 package com.example.furniturecloudy.model.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.furniturecloudy.data.Address
+import com.example.furniturecloudy.util.AddressEncryptionHelper
 import com.example.furniturecloudy.util.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,8 +19,10 @@ import javax.inject.Inject
 @HiltViewModel
 class AddressViewmodel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    application: Application
 ):ViewModel(){
+    private val encryptionHelper = AddressEncryptionHelper(application)
     private val _addNewAddress = MutableStateFlow<Resource<Address>>(Resource.UnSpecified())
     val addNewAddress = _addNewAddress.asStateFlow()
 
@@ -39,8 +43,12 @@ class AddressViewmodel @Inject constructor(
             val docRef = firestore.collection("user").document(firebaseAuth.uid!!).collection("address").document()
             val addressWithId = address.copy(id = docRef.id)
 
-            docRef.set(addressWithId).addOnSuccessListener {
+            // Encrypt sensitive fields before saving to Firestore
+            val encryptedAddress = encryptionHelper.encryptAddress(addressWithId)
+
+            docRef.set(encryptedAddress).addOnSuccessListener {
                 viewModelScope.launch {
+                    // Return original (decrypted) address to UI
                     _addNewAddress.emit(Resource.Success(addressWithId))
                 }
             }.addOnFailureListener {
@@ -60,11 +68,16 @@ class AddressViewmodel @Inject constructor(
             viewModelScope.launch {
                 _updateAddress.emit(Resource.Loading())
             }
+
+            // Encrypt sensitive fields before updating in Firestore
+            val encryptedAddress = encryptionHelper.encryptAddress(address)
+
             firestore.collection("user").document(firebaseAuth.uid!!)
                 .collection("address").document(address.id)
-                .set(address)
+                .set(encryptedAddress)
                 .addOnSuccessListener {
                     viewModelScope.launch {
+                        // Return original (decrypted) address to UI
                         _updateAddress.emit(Resource.Success(address))
                     }
                 }
