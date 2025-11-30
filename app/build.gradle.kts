@@ -107,6 +107,9 @@ dependencies {
 
     //MoMo Payment SDK (Local Module)
     implementation(project(":momo_partner_sdk"))
+
+    //Biometric Authentication
+    implementation("androidx.biometric:biometric:1.1.0")
 }
 
 kapt {

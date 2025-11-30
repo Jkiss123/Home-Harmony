@@ -328,6 +328,169 @@
 
 
 
+            <!-- Security Section -->
+            <TextView
+                android:id="@+id/tvSecurity"
+                style="@style/MediumTextViewThin"
+                android:textColor="@color/g_gray700"
+                android:textStyle="normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Bảo mật"
+                app:layout_constraintStart_toStartOf="@id/guideline1"
+                app:layout_constraintTop_toBottomOf="@id/linearNotifications" />
+
+            <LinearLayout
+                android:id="@+id/linearSecurity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/guideline1"
+                app:layout_constraintEnd_toEndOf="@id/guideline2"
+                app:layout_constraintTop_toBottomOf="@id/tvSecurity"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/search_box_background"
+                android:padding="10dp">
+
+                <!-- Toggle bật/tắt xác thực -->
+                <LinearLayout
+                    android:id="@+id/linearAuthToggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_lock"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/settings_items_background"
+                        android:backgroundTint="@color/g_blue"
+                        app:tint="@color/white"/>
+
+                    <TextView
+                        style="@style/MediumTextViewThin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Xác thực khi mở app"
+                        android:textColor="@color/g_gray700"
+                        android:textStyle="bold"
+                        android:layout_marginStart="15dp"
+                        android:layout_gravity="center_vertical"/>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchAuth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/dividerAuthMethod"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/g_line"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
+
+                <!-- Chọn phương thức xác thực -->
+                <LinearLayout
+                    android:id="@+id/linearAuthMethod"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_picked"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/settings_items_background"
+                        android:backgroundTint="@color/g_green"
+                        app:tint="@color/white"/>
+
+                    <TextView
+                        style="@style/MediumTextViewThin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Phương thức xác thực"
+                        android:textColor="@color/g_gray700"
+                        android:textStyle="bold"
+                        android:layout_marginStart="15dp"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:id="@+id/tvSelectedAuthMethod"
+                        style="@style/SmallTextViewThin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vân tay"
+                        android:textColor="@color/g_blue"
+                        android:layout_gravity="center_vertical"/>
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_arrow"
+                        app:tint="@color/g_blue_gray200"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/dividerAppPin"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/g_line"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
+
+                <!-- Thiết lập PIN ứng dụng -->
+                <LinearLayout
+                    android:id="@+id/linearSetupAppPin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_edit"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/settings_items_background"
+                        android:backgroundTint="@color/accent_orange"
+                        app:tint="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/tvSetupAppPinLabel"
+                        style="@style/MediumTextViewThin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Thiết lập PIN ứng dụng"
+                        android:textColor="@color/g_gray700"
+                        android:textStyle="bold"
+                        android:layout_marginStart="15dp"
+                        android:layout_gravity="center_vertical"/>
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_arrow"
+                        app:tint="@color/g_blue_gray200"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Account Section -->
             <TextView
                 android:id="@+id/tvRegional"
                 style="@style/MediumTextViewThin"
@@ -338,7 +501,7 @@
                 android:layout_marginTop="20dp"
                 android:text="Tài khoản"
                 app:layout_constraintStart_toStartOf="@id/guideline1"
-                app:layout_constraintTop_toBottomOf="@id/linearNotifications" />
+                app:layout_constraintTop_toBottomOf="@id/linearSecurity" />
 
             <LinearLayout
                 android:background="@drawable/search_box_background"
