@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="24dp"
+    android:background="@drawable/white_background">
+
+    <ImageView
+        android:id="@+id/ivPinIcon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_lock"
+        app:tint="@color/g_blue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPinTitle"
+        style="@style/h3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Thiết lập mã PIN"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivPinIcon" />
+
+    <TextView
+        android:id="@+id/tvPinSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Tạo mã PIN 4 chữ số để bảo vệ ứng dụng"
+        android:textColor="@color/g_gray700"
+        android:textSize="14sp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPinTitle" />
+
+    <!-- PIN Input Dots -->
+    <LinearLayout
+        android:id="@+id/pinDotsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPinSubtitle">
+
+        <View
+            android:id="@+id/pinDot1"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/pin_dot_empty" />
+
+        <View
+            android:id="@+id/pinDot2"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/pin_dot_empty" />
+
+        <View
+            android:id="@+id/pinDot3"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/pin_dot_empty" />
+
+        <View
+            android:id="@+id/pinDot4"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/pin_dot_empty" />
+    </LinearLayout>
+
+    <!-- Hidden EditText for PIN input -->
+    <EditText
+        android:id="@+id/edtPinInput"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:inputType="numberPassword"
+        android:maxLength="4"
+        android:importantForAutofill="no"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/pinDotsContainer"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPinError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/g_red"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pinDotsContainer" />
+
+    <!-- Number Pad -->
+    <GridLayout
+        android:id="@+id/numberPad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:columnCount="3"
+        android:rowCount="4"
+        android:alignmentMode="alignBounds"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPinError">
+
+        <Button
+            android:id="@+id/btn1"
+            style="@style/PinButtonStyle"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/btn2"
+            style="@style/PinButtonStyle"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/btn3"
+            style="@style/PinButtonStyle"
+            android:text="3" />
+
+        <Button
+            android:id="@+id/btn4"
+            style="@style/PinButtonStyle"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/btn5"
+            style="@style/PinButtonStyle"
+            android:text="5" />
+
+        <Button
+            android:id="@+id/btn6"
+            style="@style/PinButtonStyle"
+            android:text="6" />
+
+        <Button
+            android:id="@+id/btn7"
+            style="@style/PinButtonStyle"
+            android:text="7" />
+
+        <Button
+            android:id="@+id/btn8"
+            style="@style/PinButtonStyle"
+            android:text="8" />
+
+        <Button
+            android:id="@+id/btn9"
+            style="@style/PinButtonStyle"
+            android:text="9" />
+
+        <Space
+            android:layout_width="64dp"
+            android:layout_height="64dp" />
+
+        <Button
+            android:id="@+id/btn0"
+            style="@style/PinButtonStyle"
+            android:text="0" />
+
+        <ImageButton
+            android:id="@+id/btnBackspace"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_backspace"
+            android:contentDescription="Xóa"
+            app:tint="@color/g_gray700" />
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/numberPad">
+
+        <Button
+            android:id="@+id/btnCancelPin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bỏ qua"
+            android:textColor="@color/g_gray700"
+            android:background="@android:color/transparent"
+            style="?attr/materialButtonOutlinedStyle" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

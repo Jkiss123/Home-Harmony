@@ -1,6 +1,7 @@
 package com.example.furniturecloudy.present.fragments.shopping
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,6 +33,8 @@ import com.example.furniturecloudy.model.viewmodel.OrderViewmodel
 import com.example.furniturecloudy.util.HorizontalcalItemDecoration
 import com.example.furniturecloudy.util.Resource
 import com.example.furniturecloudy.util.formatPrice
+import com.example.furniturecloudy.utils.payment.MoMoConfig
+import com.example.furniturecloudy.utils.payment.MoMoPaymentHelper
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -51,11 +54,17 @@ class BillingFragment : Fragment() {
     private var selectedPaymentMethod : String = "COD"
     private val orderViewModel  by viewModels<OrderViewmodel>()
     private val addressViewmodel by viewModels<AddressViewmodel>()
+    private lateinit var moMoPaymentHelper: MoMoPaymentHelper
+    private var pendingOrder: Order? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         listcarts = args.cartProduct.toList()
         totalPrice= args.totalPrice
+
+        // Initialize MoMo SDK and Payment Helper
+        MoMoPaymentHelper.initialize(isDevelopment = MoMoConfig.IS_DEVELOPMENT)
+        moMoPaymentHelper = MoMoConfig.createPaymentHelper()
     }
 
     override fun onCreateView(
@@ -172,20 +181,148 @@ class BillingFragment : Fragment() {
                     dialog.dismiss()
                 }
                 .setPositiveButton("Có"){dialog,_ ->
-                    val paymentStatus = if (paymentMethod == "COD") "PENDING" else "PENDING"
+                    dialog.dismiss()
+
+                    if (paymentMethod == "MoMo") {
+                        // Handle MoMo payment
+                        handleMoMoPayment()
+                    } else {
+                        // Handle other payment methods (COD, VNPay, ZaloPay)
+                        val paymentStatus = if (paymentMethod == "COD") "PENDING" else "PENDING"
+                        val order = Order(
+                            orderStatus = OrderStatus.Ordered.status,
+                            totalPrice = totalPrice,
+                            products = listcarts,
+                            address = selectedAddress!!,
+                            paymentMethod = paymentMethod,
+                            paymentStatus = paymentStatus
+                        )
+                        orderViewModel.placeOrder(order)
+                    }
+                }
+        }
+        alertDialog.create().show()
+    }
+
+    private fun handleMoMoPayment() {
+        // Check if MoMo app is installed
+        if (!MoMoPaymentHelper.isMoMoAppInstalled(requireActivity())) {
+            AlertDialog.Builder(requireContext()).apply {
+                setTitle("Thông báo")
+                setMessage("Bạn cần cài đặt ứng dụng MoMo để sử dụng phương thức thanh toán này. Bạn có muốn tiếp tục với phương thức COD không?")
+                setNegativeButton("Hủy") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                setPositiveButton("Chuyển sang COD") { dialog, _ ->
+                    selectedPaymentMethod = "COD"
                     val order = Order(
                         orderStatus = OrderStatus.Ordered.status,
                         totalPrice = totalPrice,
                         products = listcarts,
                         address = selectedAddress!!,
-                        paymentMethod = paymentMethod,
-                        paymentStatus = paymentStatus
+                        paymentMethod = "COD",
+                        paymentStatus = "PENDING"
                     )
                     orderViewModel.placeOrder(order)
                     dialog.dismiss()
                 }
+            }.create().show()
+            return
         }
-        alertDialog.create().show()
+
+        try {
+            // Create pending order
+            pendingOrder = Order(
+                orderStatus = OrderStatus.Ordered.status,
+                totalPrice = totalPrice,
+                products = listcarts,
+                address = selectedAddress!!,
+                paymentMethod = "MoMo",
+                paymentStatus = "PENDING"
+            )
+
+            // Convert price to VND (assuming current price is in USD, 1 USD = 25000 VND)
+            val amountInVND = (totalPrice * 25000).toLong()
+
+            // Request MoMo payment
+            moMoPaymentHelper.requestPayment(
+                activity = requireActivity(),
+                amount = amountInVND,
+                orderId = pendingOrder!!.orderId,
+                description = "Thanh toán đơn hàng ${pendingOrder!!.orderId}"
+            )
+
+        } catch (e: Exception) {
+            Log.e("BillingFragment", "Error requesting MoMo payment: ${e.message}", e)
+            Toast.makeText(
+                requireContext(),
+                "Không thể kết nối với MoMo. Vui lòng thử lại.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Handle MoMo payment result
+        val moMoResult = moMoPaymentHelper.handlePaymentResult(requestCode, resultCode, data)
+        moMoResult?.let { result ->
+            if (result.isSuccessful()) {
+                // Payment successful - place order with transaction info
+                pendingOrder?.let { order ->
+                    val updatedOrder = order.copy(
+                        paymentStatus = "PAID",
+                        paymentTransactionId = result.token
+                    )
+                    orderViewModel.placeOrder(updatedOrder)
+                    pendingOrder = null
+
+                    Toast.makeText(
+                        requireContext(),
+                        "Thanh toán MoMo thành công!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                // Payment failed or cancelled
+                Toast.makeText(
+                    requireContext(),
+                    "Thanh toán thất bại: ${result.getErrorMessage()}",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                // Ask user if they want to retry or switch to COD
+                showPaymentFailedDialog()
+            }
+        }
+    }
+
+    private fun showPaymentFailedDialog() {
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle("Thanh toán thất bại")
+            setMessage("Bạn có muốn thử lại hoặc chuyển sang thanh toán khi nhận hàng (COD)?")
+            setNegativeButton("Hủy") { dialog, _ ->
+                pendingOrder = null
+                dialog.dismiss()
+            }
+            setPositiveButton("Thử lại MoMo") { dialog, _ ->
+                dialog.dismiss()
+                handleMoMoPayment()
+            }
+            setNeutralButton("Chuyển sang COD") { dialog, _ ->
+                pendingOrder?.let { order ->
+                    val updatedOrder = order.copy(
+                        paymentMethod = "COD",
+                        paymentStatus = "PENDING",
+                        paymentTransactionId = null
+                    )
+                    orderViewModel.placeOrder(updatedOrder)
+                    pendingOrder = null
+                }
+                dialog.dismiss()
+            }
+        }.create().show()
     }
 
     private fun setupBillingAdapter() {

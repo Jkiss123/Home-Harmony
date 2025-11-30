@@ -40,4 +40,8 @@ class IntroductionViewmodel @Inject constructor(
     fun startButtonClicked(){
         sharedPreferences.edit().putBoolean(INTRODUCTION_KEY,true).apply()
     }
+
+    fun signOut() {
+        firebaseAuth.signOut()
+    }
 }
