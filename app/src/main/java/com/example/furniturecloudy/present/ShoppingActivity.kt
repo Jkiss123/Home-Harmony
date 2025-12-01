@@ -1,6 +1,5 @@
 package com.example.furniturecloudy.present
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
@@ -18,26 +17,25 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ShoppingActivity : AppCompatActivity() {
-private val cartViewmodel : CartViewmodel by viewModels()
+class ShoppingActivity : BaseActivity() {
+    private val cartViewmodel: CartViewmodel by viewModels()
 
     val binding by lazy {
         ActivityShoppingBinding.inflate(layoutInflater)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-
-        //binding.bottomNavigation.setupWithNavController(navController)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView2) as NavHostFragment
-       val navController = navHostFragment.navController
-       binding.bottomNavigation.setupWithNavController(navController)
+        val navController = navHostFragment.navController
+        binding.bottomNavigation.setupWithNavController(navController)
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 cartViewmodel.cartProduct.collectLatest {
-                    when(it){
+                    when (it) {
                         is Resource.Success -> {
                             val count = it.data?.size ?: 0
                             val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
@@ -45,11 +43,11 @@ private val cartViewmodel : CartViewmodel by viewModels()
                                 number = count
                                 backgroundColor = resources.getColor(R.color.g_blue)
                             }
-                        }else -> Unit
+                        }
+                        else -> Unit
                     }
                 }
             }
         }
-
     }
 }

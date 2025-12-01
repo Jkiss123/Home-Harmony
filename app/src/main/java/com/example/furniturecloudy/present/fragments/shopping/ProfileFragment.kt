@@ -24,6 +24,7 @@ import com.example.furniturecloudy.util.BiometricHelper
 import com.example.furniturecloudy.util.PinCodeDialog
 import com.example.furniturecloudy.util.PinCodeManager
 import com.example.furniturecloudy.util.Resource
+import com.example.furniturecloudy.util.SessionManager
 import com.example.furniturecloudy.util.showBottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -37,6 +38,7 @@ class ProfileFragment : Fragment() {
     private lateinit var appAuthManager: AppAuthManager
     private lateinit var biometricHelper: BiometricHelper
     private lateinit var pinCodeManager: PinCodeManager
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,8 +56,10 @@ class ProfileFragment : Fragment() {
         appAuthManager = AppAuthManager(requireContext())
         biometricHelper = BiometricHelper(this)
         pinCodeManager = PinCodeManager(requireContext())
+        sessionManager = SessionManager.getInstance(requireContext())
 
         setupSecuritySettings()
+        setupSessionTimeoutSettings()
 
         binding.constraintProfile.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_userAccountFragment)
@@ -243,4 +247,77 @@ class ProfileFragment : Fragment() {
         showBottomNavigationView()
     }
 
+    // ==================== SESSION TIMEOUT SETTINGS ====================
+
+    private fun setupSessionTimeoutSettings() {
+        // Load current session timeout state
+        val isSessionTimeoutEnabled = sessionManager.isSessionTimeoutEnabled()
+        binding.switchSessionTimeout.isChecked = isSessionTimeoutEnabled
+        updateSessionTimeoutOptionsVisibility(isSessionTimeoutEnabled)
+        updateSelectedTimeoutText()
+
+        // Toggle session timeout on/off
+        binding.switchSessionTimeout.setOnCheckedChangeListener { _, isChecked ->
+            // Chỉ cho phép bật session timeout nếu authentication đã được bật
+            if (isChecked && !appAuthManager.isAuthEnabled()) {
+                binding.switchSessionTimeout.isChecked = false
+                Toast.makeText(
+                    requireContext(),
+                    "Vui lòng bật 'Xác thực khi mở app' trước",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnCheckedChangeListener
+            }
+
+            sessionManager.setSessionTimeoutEnabled(isChecked)
+            updateSessionTimeoutOptionsVisibility(isChecked)
+
+            if (isChecked) {
+                Toast.makeText(
+                    requireContext(),
+                    "Session Timeout đã được bật",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        // Choose timeout duration
+        binding.linearTimeoutDuration.setOnClickListener {
+            showTimeoutDurationPicker()
+        }
+    }
+
+    private fun updateSessionTimeoutOptionsVisibility(enabled: Boolean) {
+        val visibility = if (enabled) View.VISIBLE else View.GONE
+        binding.dividerTimeoutDuration.visibility = visibility
+        binding.linearTimeoutDuration.visibility = visibility
+    }
+
+    private fun updateSelectedTimeoutText() {
+        val duration = sessionManager.getSessionTimeoutDuration()
+        binding.tvSelectedTimeout.text = sessionManager.getTimeoutDisplayText(duration)
+    }
+
+    private fun showTimeoutDurationPicker() {
+        val options = sessionManager.getTimeoutOptions()
+        val labels = options.map { it.first }.toTypedArray()
+        val currentDuration = sessionManager.getSessionTimeoutDuration()
+        val currentIndex = options.indexOfFirst { it.second == currentDuration }.coerceAtLeast(0)
+
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("Chọn thời gian timeout")
+            .setSingleChoiceItems(labels, currentIndex) { dialog, which ->
+                val selectedDuration = options[which].second
+                sessionManager.setSessionTimeoutDuration(selectedDuration)
+                updateSelectedTimeoutText()
+                Toast.makeText(
+                    requireContext(),
+                    "Đã đặt timeout: ${options[which].first}",
+                    Toast.LENGTH_SHORT
+                ).show()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Hủy", null)
+            .show()
+    }
 }

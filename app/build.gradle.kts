@@ -110,6 +110,10 @@ dependencies {
 
     //Biometric Authentication
     implementation("androidx.biometric:biometric:1.1.0")
+
+    //Lifecycle for ProcessLifecycleOwner (Session Timeout)
+    implementation("androidx.lifecycle:lifecycle-process:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 }
 
 kapt {

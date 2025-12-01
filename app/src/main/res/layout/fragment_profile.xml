@@ -490,6 +490,137 @@
 
             </LinearLayout>
 
+            <!-- Session Timeout Section -->
+            <TextView
+                android:id="@+id/tvSessionTimeout"
+                style="@style/MediumTextViewThin"
+                android:textColor="@color/g_gray700"
+                android:textStyle="normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Phiên làm việc"
+                app:layout_constraintStart_toStartOf="@id/guideline1"
+                app:layout_constraintTop_toBottomOf="@id/linearSecurity" />
+
+            <LinearLayout
+                android:id="@+id/linearSessionTimeout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/guideline1"
+                app:layout_constraintEnd_toEndOf="@id/guideline2"
+                app:layout_constraintTop_toBottomOf="@id/tvSessionTimeout"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/search_box_background"
+                android:padding="10dp">
+
+                <!-- Toggle Session Timeout -->
+                <LinearLayout
+                    android:id="@+id/linearSessionTimeoutToggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_time"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/settings_items_background"
+                        android:backgroundTint="#9C27B0"
+                        app:tint="@color/white"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="15dp"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            style="@style/MediumTextViewThin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tự động khóa"
+                            android:textColor="@color/g_gray700"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            style="@style/SmallTextViewThin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Khóa app khi không hoạt động"
+                            android:textColor="@color/g_blue_gray200"
+                            android:textSize="11sp"/>
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchSessionTimeout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/dividerTimeoutDuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/g_line"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
+
+                <!-- Timeout Duration -->
+                <LinearLayout
+                    android:id="@+id/linearTimeoutDuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_picked"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/settings_items_background"
+                        android:backgroundTint="#FF5722"
+                        app:tint="@color/white"/>
+
+                    <TextView
+                        style="@style/MediumTextViewThin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Thời gian chờ"
+                        android:textColor="@color/g_gray700"
+                        android:textStyle="bold"
+                        android:layout_marginStart="15dp"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:id="@+id/tvSelectedTimeout"
+                        style="@style/SmallTextViewThin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5 phút"
+                        android:textColor="@color/g_blue"
+                        android:layout_gravity="center_vertical"/>
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_arrow"
+                        app:tint="@color/g_blue_gray200"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
             <!-- Account Section -->
             <TextView
                 android:id="@+id/tvRegional"
@@ -501,7 +632,7 @@
                 android:layout_marginTop="20dp"
                 android:text="Tài khoản"
                 app:layout_constraintStart_toStartOf="@id/guideline1"
-                app:layout_constraintTop_toBottomOf="@id/linearSecurity" />
+                app:layout_constraintTop_toBottomOf="@id/linearSessionTimeout" />
 
             <LinearLayout
                 android:background="@drawable/search_box_background"
