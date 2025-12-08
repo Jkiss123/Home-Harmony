@@ -115,7 +115,7 @@ class BillingFragment : Fragment() {
             }
             findNavController().navigate(R.id.action_billingFragment_to_addressFragment, bundle)
         }
-        binding.tvTotalPrice.text = "$ ${totalPrice.formatPrice()}}"
+        binding.tvTotalPrice.text = "$ ${totalPrice.formatPrice()}"
         binding.imageCloseBilling.setOnClickListener {
             findNavController().navigateUp()
         }
