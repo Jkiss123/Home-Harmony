@@ -19,6 +19,7 @@ import com.example.furniturecloudy.R
 import com.example.furniturecloudy.databinding.FragmentLoginBinding
 import com.example.furniturecloudy.model.viewmodel.LoginViewmodel
 import com.example.furniturecloudy.present.ShoppingActivity
+import com.example.furniturecloudy.util.OTPConfig
 import com.example.furniturecloudy.util.Resource
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -103,9 +104,21 @@ class LoginFragment : Fragment() {
                         }
                         is Resource.Success -> {
                             binding.btnLoginDangnhap.revertAnimation()
-                            Intent(requireActivity(),ShoppingActivity::class.java).also { intent ->
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                startActivity(intent)
+
+                            // ✅ Login successful, now check if 2FA is required
+                            val user = it.data
+                            if (user != null) {
+                                // Check if 2FA is enabled (forced for all users by default)
+                                if (OTPConfig.TWO_FACTOR_ENABLED_BY_DEFAULT) {
+                                    Log.d("LoginFragment", "2FA enabled for user: ${user.email}")
+                                    // Show OTP BottomSheet
+                                    showOTPVerification(user.uid, user.email ?: "")
+                                } else {
+                                    // Direct login without 2FA (legacy users)
+                                    navigateToShopping()
+                                }
+                            } else {
+                                navigateToShopping()
                             }
                         }
                         else -> Unit
@@ -132,6 +145,35 @@ class LoginFragment : Fragment() {
         } catch (e: ApiException) {
             Log.w("LoginFragment", "Google sign in failed", e)
             Toast.makeText(requireContext(), "Đăng nhập Google thất bại. Vui lòng thử lại", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Show OTP verification BottomSheet
+     */
+    private fun showOTPVerification(userId: String, email: String) {
+        Log.d("LoginFragment", "Showing OTP verification for: $email")
+
+        val otpBottomSheet = OTPBottomSheetFragment.newInstance(
+            userId = userId,
+            email = email,
+            onSuccess = {
+                // OTP verified successfully, navigate to shopping
+                Log.d("LoginFragment", "OTP verified successfully!")
+                navigateToShopping()
+            }
+        )
+
+        otpBottomSheet.show(childFragmentManager, "OTPBottomSheet")
+    }
+
+    /**
+     * Navigate to Shopping Activity
+     */
+    private fun navigateToShopping() {
+        Intent(requireActivity(), ShoppingActivity::class.java).also { intent ->
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
         }
     }
 }

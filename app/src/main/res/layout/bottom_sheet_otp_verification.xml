@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:paddingBottom="24dp">
+
+    <!-- Handle bar -->
+    <View
+        android:id="@+id/handle_bar"
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_bottom_sheet_handle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="🔐 Xác thực hai bước"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/handle_bar" />
+
+    <!-- Description -->
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:text="Mã OTP đã được gửi đến"
+        android:textColor="@color/g_gray700"
+        android:textSize="14sp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <!-- Email display -->
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="24dp"
+        android:text="m***y@gmail.com"
+        android:textColor="@color/g_blue"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+    <!-- OTP Input View -->
+    <com.example.furniturecloudy.view.OTPInputView
+        android:id="@+id/otp_input_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_email" />
+
+    <!-- Error message -->
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:text="Mã OTP không đúng. Còn 2 lần thử."
+        android:textColor="@color/g_red"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/otp_input_view" />
+
+    <!-- Countdown timer -->
+    <LinearLayout
+        android:id="@+id/layout_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_error">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⏱️"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Gửi lại sau 00:60"
+            android:textColor="@color/g_gray700"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Verify button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_verify"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/blue_background_button"
+        android:text="Xác nhận"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_timer" />
+
+    <!-- Loading indicator -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/btn_verify"
+        app:layout_constraintEnd_toEndOf="@id/btn_verify"
+        app:layout_constraintStart_toStartOf="@id/btn_verify"
+        app:layout_constraintTop_toTopOf="@id/btn_verify" />
+
+    <!-- Resend section -->
+    <LinearLayout
+        android:id="@+id/layout_resend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_verify">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Không nhận được mã?"
+            android:textColor="@color/g_gray700"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_resend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="Gửi lại"
+            android:textColor="@color/g_blue"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <!-- Debug mode indicator (only visible in debug) -->
+    <TextView
+        android:id="@+id/tv_debug_mode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:text="⚠️ DEBUG MODE: Any 6-digit code works"
+        android:textColor="@color/g_orange_yellow"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_resend" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

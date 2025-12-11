@@ -1,0 +1,12 @@
+{
+  "name": "home-harmony-email-proxy",
+  "version": "1.0.0",
+  "description": "Email proxy for Home Harmony Android app",
+  "main": "api/send-otp.js",
+  "scripts": {
+    "start": "vercel dev"
+  },
+  "keywords": ["email", "proxy", "emailjs"],
+  "author": "Home Harmony",
+  "license": "MIT"
+}
