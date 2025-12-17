@@ -12,10 +12,24 @@ fun validateEmail(email:String) : RegisterValidation{
     return  RegisterValidation.Success
 }
 
-fun validatePassword(password:String): RegisterValidation{
+fun validatePassword(password: String): RegisterValidation {
     if (password.isEmpty())
         return RegisterValidation.Failed("Password không được để trống")
-    if (password.length <6)
-            return RegisterValidation.Failed("Password phải lớn hơn 6 ký tự")
+
+    if (password.length < 8)
+        return RegisterValidation.Failed("Password phải có ít nhất 8 ký tự")
+
+    if (!password.contains(Regex("[A-Z]")))
+        return RegisterValidation.Failed("Password phải có ít nhất 1 chữ HOA")
+
+    if (!password.contains(Regex("[a-z]")))
+        return RegisterValidation.Failed("Password phải có ít nhất 1 chữ thường")
+
+    if (!password.contains(Regex("[0-9]")))
+        return RegisterValidation.Failed("Password phải có ít nhất 1 chữ SỐ")
+
+    if (!password.contains(Regex("[!@#\$%^&*(),.?\":{}|<>]")))
+        return RegisterValidation.Failed("Password phải có ít nhất 1 ký tự đặc biệt (!@#\$%^&*...)")
+
     return RegisterValidation.Success
 }

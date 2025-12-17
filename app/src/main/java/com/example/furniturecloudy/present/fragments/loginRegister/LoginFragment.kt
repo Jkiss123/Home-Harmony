@@ -75,7 +75,7 @@ class LoginFragment : Fragment() {
             btnLoginDangnhap.setOnClickListener {
                     val email = edtLoginTaiKhoan.text.toString().trim()
                     val password =edtLoginMatKhau.text.toString()
-                viewmodel.loginAccount(email,password)
+                viewmodel.loginAccountWithProtection(email,password)
             }
             txtvSlogan2Login.setOnClickListener {
                 findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
