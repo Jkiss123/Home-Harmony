@@ -142,6 +142,21 @@
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/edEmail" />
 
+        <!-- Fake Data Manager Button - Development only -->
+        <Button
+            android:id="@+id/btnFakeDataManager"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="🎲 Fake Data Manager (Dev)"
+            android:textAllCaps="false"
+            android:backgroundTint="#FF9800"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@id/tvUpdatePassword"
+            tools:visibility="visible" />
+
         <com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/buttonSave"
             android:layout_width="0dp"
@@ -156,7 +171,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/tvUpdatePassword"
+            app:layout_constraintTop_toBottomOf="@+id/btnFakeDataManager"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"/>
 
         <androidx.constraintlayout.widget.Guideline

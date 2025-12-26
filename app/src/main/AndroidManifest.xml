@@ -40,6 +40,18 @@
             android:theme="@style/Theme.FurnitureCloudy"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <!-- Fake Data Manager Activity (Development only) -->
+        <activity
+            android:name=".present.FakeDataManagerActivity"
+            android:exported="true"
+            android:theme="@style/Theme.FurnitureCloudy">
+            <!-- Allow opening via adb -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

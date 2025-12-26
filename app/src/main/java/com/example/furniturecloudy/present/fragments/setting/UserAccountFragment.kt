@@ -119,6 +119,25 @@ class UserAccountFragment : Fragment() {
             showChangePasswordDialog()
         }
 
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // 🎲 FAKE DATA MANAGER - Development only
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        val isDebugMode = false
+        if (isDebugMode) {
+            // Show button chỉ trong DEBUG mode
+            binding.btnFakeDataManager.visibility = View.VISIBLE
+
+            binding.btnFakeDataManager.setOnClickListener {
+                // Mở FakeDataManagerActivity
+                val intent = Intent(
+                    requireContext(),
+                    com.example.furniturecloudy.present.FakeDataManagerActivity::class.java
+                )
+                startActivity(intent)
+            }
+        }
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
         binding.imageCloseUserAccount.setOnClickListener {
             findNavController().navigateUp()
         }
