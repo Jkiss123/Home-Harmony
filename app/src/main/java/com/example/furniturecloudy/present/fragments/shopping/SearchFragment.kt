@@ -37,7 +37,8 @@ class SearchFragment : Fragment() {
     private lateinit var binding : FragmentSearchBinding
     private val bestDealsAdapter by lazy { BestDealsAdapter() }
     private val searchHistoryAdapter by lazy { SearchHistoryAdapter() }
-    private val viewmodel : SearchViewmodel by viewModels()
+    private val viewmodel: SearchViewmodel by viewModels()
+
     private var isSearching = false
     private var isFromRecentSearch = false
 
