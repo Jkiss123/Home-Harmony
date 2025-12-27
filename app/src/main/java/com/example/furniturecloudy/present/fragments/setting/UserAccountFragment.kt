@@ -120,18 +120,28 @@ class UserAccountFragment : Fragment() {
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 🎲 FAKE DATA MANAGER - Development only
+        // 🎲 DEVELOPMENT TOOLS - Development only
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        val isDebugMode = false
+        val isDebugMode = true
         if (isDebugMode) {
-            // Show button chỉ trong DEBUG mode
+            // Show buttons chỉ trong DEBUG mode
             binding.btnFakeDataManager.visibility = View.VISIBLE
+            binding.btnPerformanceDemo.visibility = View.VISIBLE
 
             binding.btnFakeDataManager.setOnClickListener {
                 // Mở FakeDataManagerActivity
                 val intent = Intent(
                     requireContext(),
                     com.example.furniturecloudy.present.FakeDataManagerActivity::class.java
+                )
+                startActivity(intent)
+            }
+
+            binding.btnPerformanceDemo.setOnClickListener {
+                // Mở PerformanceDemoActivity
+                val intent = Intent(
+                    requireContext(),
+                    com.example.furniturecloudy.present.demo.PerformanceDemoActivity::class.java
                 )
                 startActivity(intent)
             }

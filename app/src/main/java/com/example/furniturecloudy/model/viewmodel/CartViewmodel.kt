@@ -24,7 +24,7 @@ class CartViewmodel @Inject constructor(
 ):ViewModel() {
     private val _cartProducts = MutableStateFlow<Resource<List<CartProducts>>>(Resource.UnSpecified())
     val cartProduct = _cartProducts.asStateFlow()
-    private var cartProductsDocument = emptyList<DocumentSnapshot>()
+    private val cartProductsMap = mutableMapOf<String, DocumentSnapshot>()
 
     private val _deleteDialog = MutableSharedFlow<CartProducts>()
     val deleteDialog = _deleteDialog.asSharedFlow()
@@ -55,8 +55,14 @@ class CartViewmodel @Inject constructor(
                     _cartProducts.emit(Resource.Error(error?.message.toString()))
                 }
             }else{
-                cartProductsDocument =value.documents
                 val cartProducts = value.toObjects(CartProducts::class.java)
+
+                cartProductsMap.clear()
+                cartProducts.forEachIndexed { index, cartProduct ->
+                    // Map: productId → DocumentSnapshot
+                    cartProductsMap[cartProduct.product.id] = value.documents[index]
+                }
+
                 viewModelScope.launch {
                     _cartProducts.emit(Resource.Success(cartProducts))
                 }
@@ -65,10 +71,10 @@ class CartViewmodel @Inject constructor(
     }
 
     fun ChangeQuantity(cartProducts: CartProducts,status: FirebaseCommon.QuantityStatus){
-       val index = _cartProducts.value.data?.indexOf(cartProducts)
-           //index có thể bằng -1 nếu người dùng spam tăng và giảm sản phẩm liên tục
-        if (index != null && index != -1) {
-            val documentId = cartProductsDocument[index].id
+        val documentSnapshot = cartProductsMap[cartProducts.product.id]
+
+        if (documentSnapshot != null) {
+            val documentId = documentSnapshot.id
             when(status){
                 FirebaseCommon.QuantityStatus.INCREASE -> {
                     viewModelScope.launch {
@@ -94,9 +100,10 @@ class CartViewmodel @Inject constructor(
     }
 
     fun deleteCartProduct(cartProducts: CartProducts){
-        val index = cartProduct.value.data?.indexOf(cartProducts)
-        if (index != null && index != -1){
-            val documentId = cartProductsDocument[index].id
+        val documentSnapshot = cartProductsMap[cartProducts.product.id]
+
+        if (documentSnapshot != null){
+            val documentId = documentSnapshot.id
             firestore.collection("user").document(firebaseAuth.uid!!).collection("cart").document(documentId).delete()
         }
 
