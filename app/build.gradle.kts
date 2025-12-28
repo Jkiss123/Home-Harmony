@@ -119,6 +119,8 @@ dependencies {
     //Lifecycle for ProcessLifecycleOwner (Session Timeout)
     implementation("androidx.lifecycle:lifecycle-process:2.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 }
 
 kapt {

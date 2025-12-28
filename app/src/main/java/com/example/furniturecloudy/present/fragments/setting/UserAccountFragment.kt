@@ -127,6 +127,7 @@ class UserAccountFragment : Fragment() {
             // Show buttons chỉ trong DEBUG mode
             binding.btnFakeDataManager.visibility = View.VISIBLE
             binding.btnPerformanceDemo.visibility = View.VISIBLE
+            binding.btnExportOrders.visibility = View.VISIBLE
 
             binding.btnFakeDataManager.setOnClickListener {
                 // Mở FakeDataManagerActivity
@@ -144,6 +145,11 @@ class UserAccountFragment : Fragment() {
                     com.example.furniturecloudy.present.demo.PerformanceDemoActivity::class.java
                 )
                 startActivity(intent)
+            }
+
+            binding.btnExportOrders.setOnClickListener {
+                // E2 Demo: Export Orders with WorkManager
+                com.example.furniturecloudy.util.ExportOrdersHelper.exportOrders(requireContext())
             }
         }
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
